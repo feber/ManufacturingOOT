@@ -90,5 +90,4 @@ public class Part implements Serializable {
     public String toString() {
         return "org.manufacturingoot.model.Part[ id=" + id + " ]";
     }
-
 }
