@@ -1,21 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.manufacturingoot;
 
-/**
- *
- * @author Febrian
- */
-public class Main {
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import org.manufacturingoot.controller.ManufacturingOrderJpaController;
+import org.manufacturingoot.model.ManufacturingOrder;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public class Main {
     
+    public static void main(String[] args) {
+        ManufacturingOrder mo = new ManufacturingOrder();
+        mo.setEmail("somebody@a.com");
+        mo.setStatus("");
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ManufacturingOOTPU");
+        ManufacturingOrderJpaController controller = new ManufacturingOrderJpaController(emf);
+        controller.create(mo);
+    }
 }
