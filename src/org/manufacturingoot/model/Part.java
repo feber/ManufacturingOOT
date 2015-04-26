@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Part implements Serializable {
@@ -25,6 +26,9 @@ public class Part implements Serializable {
     private double weight;
 
     private int stock;
+
+    @ManyToOne(optional = false)
+    private BillOfMaterial billOfMaterial;
 
     public Long getId() {
         return id;
@@ -64,6 +68,14 @@ public class Part implements Serializable {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public BillOfMaterial getBillOfMaterial() {
+        return billOfMaterial;
+    }
+
+    public void setBillOfMaterial(BillOfMaterial billOfMaterial) {
+        this.billOfMaterial = billOfMaterial;
     }
 
     @Override
