@@ -1,4 +1,4 @@
-package org.manufacturingoot.controller;
+package org.manufacturingoot.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,12 +8,12 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.manufacturingoot.controller.exceptions.NonexistentEntityException;
+import org.manufacturingoot.service.exceptions.NonexistentEntityException;
 import org.manufacturingoot.model.ManufacturingOrder;
 
-public class ManufacturingOrderJpaController implements Serializable {
+public class ManufacturingOrderService implements Serializable {
 
-    public ManufacturingOrderJpaController(EntityManagerFactory emf) {
+    public ManufacturingOrderService(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
