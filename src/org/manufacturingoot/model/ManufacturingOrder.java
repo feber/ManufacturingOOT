@@ -13,7 +13,7 @@ public class ManufacturingOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -73,5 +73,4 @@ public class ManufacturingOrder implements Serializable {
     public String toString() {
         return "org.manufacturingoot.model.ManufacturingOrder[ id=" + id + " ]";
     }
-
 }

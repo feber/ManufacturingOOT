@@ -3,6 +3,7 @@
   <persistence-unit name="ManufacturingOOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>org.manufacturingoot.model.ManufacturingOrder</class>
+    <class>org.manufacturingoot.model.Product</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/manufacturing_oot?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
