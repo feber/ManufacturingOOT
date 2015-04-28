@@ -24,7 +24,7 @@ public class Product implements Serializable {
     private float productionCost;
 
     @Column(nullable = false)
-    private float price;
+    private double price;
 
     @Column(nullable = false)
     private float weight;
@@ -60,11 +60,11 @@ public class Product implements Serializable {
         this.productionCost = productionCost;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
