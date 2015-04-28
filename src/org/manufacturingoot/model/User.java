@@ -1,6 +1,7 @@
 package org.manufacturingoot.model;
 
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -10,9 +11,16 @@ import javax.persistence.TemporalType;
 public abstract class User {
 
     @Id
+    @Column(length = 40)
     protected String username;
+
+    @Column(length = 100)
     protected String fullName;
+
+    @Column(length = 40)
     protected String email;
+
+    @Column(length = 15)
     protected String phoneNumber;
 
     @Temporal(TemporalType.TIMESTAMP)

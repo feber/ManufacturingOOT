@@ -10,6 +10,7 @@
     <class>org.manufacturingoot.model.WarehouseDepartment</class>
     <class>org.manufacturingoot.model.SalesDepartment</class>
     <class>org.manufacturingoot.model.SalesForecast</class>
+    <class>org.manufacturingoot.model.DistributionOrder</class>
     <properties>
       <!-- edit this file according to your database url -->
       <!-- here I use MySQL -->

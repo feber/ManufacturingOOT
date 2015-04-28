@@ -14,12 +14,13 @@ public class ManufacturingOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 10)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 40)
     private String email;
 
-    @Column(length = 20, nullable = false)
+    @Column(nullable = false, length = 20)
     private String status;
 
     public Long getId() {

@@ -1,20 +1,17 @@
 package org.manufacturingoot.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class SalesForecast implements Serializable {
+public class DistributionOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,11 +21,11 @@ public class SalesForecast implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private String address;
 
-    @ManyToMany
-    private List<Product> products = new ArrayList<>();
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date sendDate;
 
     public Long getId() {
         return id;
@@ -38,16 +35,20 @@ public class SalesForecast implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Date getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
     }
 
     @Override
@@ -60,10 +61,10 @@ public class SalesForecast implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SalesForecast)) {
+        if (!(object instanceof DistributionOrder)) {
             return false;
         }
-        SalesForecast other = (SalesForecast) object;
+        DistributionOrder other = (DistributionOrder) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -72,7 +73,7 @@ public class SalesForecast implements Serializable {
 
     @Override
     public String toString() {
-        return "org.manufacturingoot.model.SalesForecast[ id=" + id + " ]";
+        return "org.manufacturingoot.model.DistributionOrder[ id=" + id + " ]";
     }
 
 }
