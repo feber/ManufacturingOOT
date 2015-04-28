@@ -17,7 +17,6 @@ public class DistributionOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 10)
     private Long id;
 
     @Column(nullable = false)
