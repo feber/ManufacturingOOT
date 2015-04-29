@@ -1,14 +1,11 @@
 package org.manufacturingoot.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class ManufacturingOrder implements Serializable {
@@ -24,13 +21,6 @@ public class ManufacturingOrder implements Serializable {
 
     @Column(nullable = false, length = 20)
     private String status;
-
-    @Column(nullable = false)
-    private String message;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date receiveDate;
 
     public Long getId() {
         return id;
@@ -52,27 +42,11 @@ public class ManufacturingOrder implements Serializable {
         return status;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public void setStatus(String status) {
         if ("".equals(status) || status == null) {
             status = "UNPROCESSED";
         }
         this.status = status;
-    }
-
-    public Date getReceiveDate() {
-        return receiveDate;
-    }
-
-    public void setReceiveDate(Date receiveDate) {
-        this.receiveDate = receiveDate;
     }
 
     @Override

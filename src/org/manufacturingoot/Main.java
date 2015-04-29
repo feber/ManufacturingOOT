@@ -23,15 +23,13 @@ import org.manufacturingoot.service.WarehouseDepartmentService;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ManufacturingOOTPU");
-
         ManufacturingOrder mo = new ManufacturingOrder();
         mo.setEmail("somebody@a.com");
         mo.setStatus("");
-        mo.setMessage("kursi 3 meja 4");
-        mo.setReceiveDate(new Date());
-        ManufacturingOrderService mos = new ManufacturingOrderService(emf);
-        mos.create(mo);
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ManufacturingOOTPU");
+        ManufacturingOrderService controller = new ManufacturingOrderService(emf);
+        controller.create(mo);
 
         BillOfMaterial bom = new BillOfMaterial();
         bom.setApproved(true);
@@ -53,6 +51,7 @@ public class Main {
         product.setProductionCost(300);
         product.setPrice(product.getProductionCost() * 1.2);
         product.setSoldable(true);
+        product.setVolume("1 m^3");
         product.setWeight(1);
         product.setOrder(mo);
         ProductService ps = new ProductService(emf);
@@ -88,7 +87,6 @@ public class Main {
         SalesForecast sf = new SalesForecast();
         sf.setDate(new Date());
         sf.getProducts().add(product);
-        sf.setProductionProbability(0.7);
         SalesForecastService sfs = new SalesForecastService(emf);
         sfs.create(sf);
 
