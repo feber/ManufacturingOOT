@@ -29,9 +29,6 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private float weight;
 
-    @Column(length = 20)
-    private String volume;
-
     private boolean soldable;
 
     @ManyToOne(optional = false)
@@ -75,14 +72,6 @@ public class Product implements Serializable {
 
     public void setWeight(float weight) {
         this.weight = weight;
-    }
-
-    public String getVolume() {
-        return volume;
-    }
-
-    public void setVolume(String volume) {
-        this.volume = volume;
     }
 
     public boolean isSoldable() {
