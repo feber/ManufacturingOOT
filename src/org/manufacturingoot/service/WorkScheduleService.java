@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.manufacturingoot.service;
 
 import java.io.Serializable;
@@ -8,12 +13,16 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.manufacturingoot.model.WorkSchedule;
 import org.manufacturingoot.service.exceptions.NonexistentEntityException;
-import org.manufacturingoot.model.ManufacturingOrder;
 
-public class ManufacturingOrderService implements Serializable {
+/**
+ *
+ * @author Febrian
+ */
+public class WorkScheduleService implements Serializable {
 
-    public ManufacturingOrderService(EntityManagerFactory emf) {
+    public WorkScheduleService(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -22,12 +31,12 @@ public class ManufacturingOrderService implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(ManufacturingOrder manufacturingOrder) {
+    public void create(WorkSchedule workSchedule) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(manufacturingOrder);
+            em.persist(workSchedule);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -36,19 +45,19 @@ public class ManufacturingOrderService implements Serializable {
         }
     }
 
-    public void edit(ManufacturingOrder manufacturingOrder) throws NonexistentEntityException, Exception {
+    public void edit(WorkSchedule workSchedule) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            manufacturingOrder = em.merge(manufacturingOrder);
+            workSchedule = em.merge(workSchedule);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = manufacturingOrder.getId();
-                if (findManufacturingOrder(id) == null) {
-                    throw new NonexistentEntityException("The manufacturingOrder with id " + id + " no longer exists.");
+                Long id = workSchedule.getId();
+                if (findWorkSchedule(id) == null) {
+                    throw new NonexistentEntityException("The workSchedule with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -64,14 +73,14 @@ public class ManufacturingOrderService implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            ManufacturingOrder manufacturingOrder;
+            WorkSchedule workSchedule;
             try {
-                manufacturingOrder = em.getReference(ManufacturingOrder.class, id);
-                manufacturingOrder.getId();
+                workSchedule = em.getReference(WorkSchedule.class, id);
+                workSchedule.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The manufacturingOrder with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The workSchedule with id " + id + " no longer exists.", enfe);
             }
-            em.remove(manufacturingOrder);
+            em.remove(workSchedule);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -80,19 +89,19 @@ public class ManufacturingOrderService implements Serializable {
         }
     }
 
-    public List<ManufacturingOrder> findManufacturingOrderEntities() {
-        return findManufacturingOrderEntities(true, -1, -1);
+    public List<WorkSchedule> findWorkScheduleEntities() {
+        return findWorkScheduleEntities(true, -1, -1);
     }
 
-    public List<ManufacturingOrder> findManufacturingOrderEntities(int maxResults, int firstResult) {
-        return findManufacturingOrderEntities(false, maxResults, firstResult);
+    public List<WorkSchedule> findWorkScheduleEntities(int maxResults, int firstResult) {
+        return findWorkScheduleEntities(false, maxResults, firstResult);
     }
 
-    private List<ManufacturingOrder> findManufacturingOrderEntities(boolean all, int maxResults, int firstResult) {
+    private List<WorkSchedule> findWorkScheduleEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(ManufacturingOrder.class));
+            cq.select(cq.from(WorkSchedule.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -104,20 +113,20 @@ public class ManufacturingOrderService implements Serializable {
         }
     }
 
-    public ManufacturingOrder findManufacturingOrder(Long id) {
+    public WorkSchedule findWorkSchedule(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(ManufacturingOrder.class, id);
+            return em.find(WorkSchedule.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getManufacturingOrderCount() {
+    public int getWorkScheduleCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<ManufacturingOrder> rt = cq.from(ManufacturingOrder.class);
+            Root<WorkSchedule> rt = cq.from(WorkSchedule.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
@@ -125,4 +134,5 @@ public class ManufacturingOrderService implements Serializable {
             em.close();
         }
     }
+    
 }
