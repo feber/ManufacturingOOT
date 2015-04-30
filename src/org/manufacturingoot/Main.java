@@ -41,10 +41,9 @@ public class Main {
 
         Part part = new Part();
         part.setName("kayu");
-        part.setPrice(5000);
+        part.setPrice(5000.0);
         part.setStock(23);
         part.setWeight(2.1);
-        part.setBillOfMaterial(bom);
         PartService partService = new PartService(emf);
         partService.create(part);
 

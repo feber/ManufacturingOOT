@@ -9,12 +9,20 @@
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuManufacturingOrder">
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemManufacturingOrder">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Manufacturing Order"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuManufacturingOrderActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemManufacturingOrderActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemPart">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Part"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemPartActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

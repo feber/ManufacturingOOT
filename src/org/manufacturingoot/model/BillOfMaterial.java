@@ -1,12 +1,15 @@
 package org.manufacturingoot.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -14,7 +17,7 @@ import javax.persistence.TemporalType;
 public class BillOfMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +25,9 @@ public class BillOfMaterial implements Serializable {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestDate;
+
+    @OneToMany
+    private List<Part> parts = new ArrayList<>();
 
     private boolean approved;
 
@@ -39,6 +45,16 @@ public class BillOfMaterial implements Serializable {
 
     public void setRequestDate(Date requestDate) {
         this.requestDate = requestDate;
+    }
+
+    public List<Part> getParts() {
+        return parts;
+    }
+
+    public void addPart(Part p, int total) {
+        for (int i = 0; i < total; i++) {
+            parts.add(p);
+        }
     }
 
     public boolean isApproved() {

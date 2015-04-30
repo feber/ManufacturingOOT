@@ -21,14 +21,11 @@ public class Part implements Serializable {
     private String name;
 
     @Column(nullable = false)
-    private double price;
+    private Double price;
 
-    private double weight;
+    private Double weight;
 
-    private int stock;
-
-    @ManyToOne(optional = false)
-    private BillOfMaterial billOfMaterial;
+    private Integer stock;
 
     public Long getId() {
         return id;
@@ -46,36 +43,28 @@ public class Part implements Serializable {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
-    }
-
-    public BillOfMaterial getBillOfMaterial() {
-        return billOfMaterial;
-    }
-
-    public void setBillOfMaterial(BillOfMaterial billOfMaterial) {
-        this.billOfMaterial = billOfMaterial;
     }
 
     @Override

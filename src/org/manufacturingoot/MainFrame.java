@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.manufacturingoot.view.ManufacturingOrderPanel;
+import org.manufacturingoot.view.PartPanel;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -22,19 +23,28 @@ public class MainFrame extends javax.swing.JFrame {
 
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        menuManufacturingOrder = new javax.swing.JMenuItem();
+        menuItemManufacturingOrder = new javax.swing.JMenuItem();
+        menuItemPart = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jMenu1.setText("File");
 
-        menuManufacturingOrder.setText("Manufacturing Order");
-        menuManufacturingOrder.addActionListener(new java.awt.event.ActionListener() {
+        menuItemManufacturingOrder.setText("Manufacturing Order");
+        menuItemManufacturingOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuManufacturingOrderActionPerformed(evt);
+                menuItemManufacturingOrderActionPerformed(evt);
             }
         });
-        jMenu1.add(menuManufacturingOrder);
+        jMenu1.add(menuItemManufacturingOrder);
+
+        menuItemPart.setText("Part");
+        menuItemPart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemPartActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemPart);
 
         menuBar.add(jMenu1);
 
@@ -54,10 +64,15 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuManufacturingOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuManufacturingOrderActionPerformed
+    private void menuItemManufacturingOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemManufacturingOrderActionPerformed
         setContentPane(new ManufacturingOrderPanel(emf));
         revalidate();
-    }//GEN-LAST:event_menuManufacturingOrderActionPerformed
+    }//GEN-LAST:event_menuItemManufacturingOrderActionPerformed
+
+    private void menuItemPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPartActionPerformed
+        setContentPane(new PartPanel(emf));
+        revalidate();
+    }//GEN-LAST:event_menuItemPartActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -84,6 +99,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem menuManufacturingOrder;
+    private javax.swing.JMenuItem menuItemManufacturingOrder;
+    private javax.swing.JMenuItem menuItemPart;
     // End of variables declaration//GEN-END:variables
 }

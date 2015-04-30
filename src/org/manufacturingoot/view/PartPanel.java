@@ -5,16 +5,16 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.manufacturingoot.model.ManufacturingOrder;
-import org.manufacturingoot.service.ManufacturingOrderService;
+import org.manufacturingoot.model.Part;
+import org.manufacturingoot.service.PartService;
 import org.manufacturingoot.service.exceptions.NonexistentEntityException;
 import org.manufacturingoot.util.Constants;
 
-public class ManufacturingOrderPanel extends javax.swing.JPanel {
+public class PartPanel extends javax.swing.JPanel {
 
     private EntityManagerFactory emf;
 
-    public ManufacturingOrderPanel(EntityManagerFactory emf) {
+    public PartPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
     }
@@ -36,14 +36,14 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
         buttonNew = new javax.swing.JButton();
         buttonDelete = new javax.swing.JButton();
 
-        jLabel1.setText("Manufacturing Order");
+        jLabel1.setText("Part");
 
         tableData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Email", "Message", "Receive Date", "Status"
+                "ID", "Name", "Price", "Stock", "Weight"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -125,20 +125,20 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        ManufacturingOrderService mos = new ManufacturingOrderService(emf);
-        List<ManufacturingOrder> rows = mos.findManufacturingOrderEntities();
+        PartService mos = new PartService(emf);
+        List<Part> rows = mos.findPartEntities();
 
         DefaultTableModel model = (DefaultTableModel) tableData.getModel();
         model.setNumRows(0);
 
         for (int i = 0; i < rows.size(); i++) {
-            ManufacturingOrder current = rows.get(i);
+            Part current = rows.get(i);
             Object[] data = {
                 current.getId(),
-                current.getEmail(),
-                current.getMessage(),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getReceiveDate()),
-                current.getStatus()
+                current.getName(),
+                current.getPrice(),
+                current.getWeight(),
+                current.getStock()
             };
             model.addRow(data);
         }
@@ -148,23 +148,23 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
         String id = "";
-        ManufacturingOrder selected = null;
+        Part selected = null;
 
         try {
             id = tableData.getValueAt(tableData.getSelectedRow(), 0)
                     .toString();
 
-            selected = new ManufacturingOrderService(emf)
-                    .findManufacturingOrder(Long.parseLong(id));
+            selected = new PartService(emf)
+                    .findPart(Long.parseLong(id));
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("no row selected, form for new data");
         } finally {
-            new ManufacturingOrderForm(emf, selected).setVisible(true);
+            new PartForm(emf, selected).setVisible(true);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
-        new ManufacturingOrderForm(emf, null).setVisible(true);
+        new PartForm(emf, null).setVisible(true);
     }//GEN-LAST:event_buttonNewActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -173,14 +173,14 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
         try {
             id = tableData.getValueAt(tableData.getSelectedRow(), 0)
                     .toString();
-            new ManufacturingOrderService(emf).destroy(Long.parseLong(id));
+            new PartService(emf).destroy(Long.parseLong(id));
         } catch (IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "Pilih baris terlebih dahulu");
         } catch (NonexistentEntityException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Gagal menghapus data");
         }
-        
+
         buttonReloadActionPerformed(evt);
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
