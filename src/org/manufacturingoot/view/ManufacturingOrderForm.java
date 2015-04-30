@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.manufacturingoot.view;
 
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,18 +11,12 @@ import org.manufacturingoot.model.ManufacturingOrder;
 import org.manufacturingoot.service.ManufacturingOrderService;
 import org.manufacturingoot.util.Constants;
 
-/**
- *
- * @author Febrian
- */
 public class ManufacturingOrderForm extends javax.swing.JFrame {
 
     private ManufacturingOrder currentItem;
     private EntityManagerFactory emf;
+    private boolean updateData;
 
-    /**
-     * Creates new form Temp
-     */
     public ManufacturingOrderForm(EntityManagerFactory emf, ManufacturingOrder mo) {
         initComponents();
         this.emf = emf;
@@ -51,13 +41,13 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        textMessage = new javax.swing.JTextField();
-        textDate = new javax.swing.JTextField();
         comboStatus = new javax.swing.JComboBox();
-        buttonNew = new javax.swing.JButton();
         buttonSave = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         textId = new javax.swing.JTextField();
+        textDate = new javax.swing.JFormattedTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textMessage = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,13 +63,6 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
 
         comboStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "UNPROCESSED", "PROCESSING", "PROCESSED" }));
 
-        buttonNew.setText("New Data");
-        buttonNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonNewActionPerformed(evt);
-            }
-        });
-
         buttonSave.setText("Save");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +74,12 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
 
         textId.setEnabled(false);
 
+        textDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss"))));
+
+        textMessage.setColumns(20);
+        textMessage.setRows(5);
+        jScrollPane1.setViewportView(textMessage);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -100,8 +89,6 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(buttonNew)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonSave))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -115,11 +102,11 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
                             .addComponent(jLabel6))
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboStatus, 0, 300, Short.MAX_VALUE)
                             .addComponent(textEmail)
-                            .addComponent(textDate)
-                            .addComponent(textMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                            .addComponent(textId))))
+                            .addComponent(textId)
+                            .addComponent(textDate, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -136,9 +123,9 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(textEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(textMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -147,10 +134,8 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonNew)
-                    .addComponent(buttonSave))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonSave)
                 .addContainerGap())
         );
 
@@ -158,37 +143,25 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 420, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 303, Short.MAX_VALUE)
+            .addGap(0, 318, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
-        textEmail.setText("");
-        textMessage.setText("");
-        textDate.setText("");
-        comboStatus.setSelectedIndex(0);
-
-        currentItem = null;
-
-        textDate.setText(
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(new Date()));
-    }//GEN-LAST:event_buttonNewActionPerformed
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
         ManufacturingOrderService mos = new ManufacturingOrderService(emf);
@@ -197,6 +170,7 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
             loadForm();
             try {
                 mos.edit(currentItem);
+                textEmail.requestFocus();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Gagal melakukan update");;
@@ -207,7 +181,13 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
             mos.create(currentItem);
         }
 
-        buttonNewActionPerformed(evt);
+        if (updateData) {
+            WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+            dispatchEvent(event);
+        } else {
+            textEmail.setText("");
+            textMessage.setText("");
+        }
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void loadForm() {
@@ -229,7 +209,7 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
             textDate.setText(
                     new SimpleDateFormat(Constants.DATE_FORMAT).format(new Date()));
         } else {
-            buttonNew.setVisible(false);
+            updateData = true;
             textId.setText(currentItem.getId().toString());
             textEmail.setText(currentItem.getEmail());
             textMessage.setText(currentItem.getMessage());
@@ -240,7 +220,6 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonNew;
     private javax.swing.JButton buttonSave;
     private javax.swing.JComboBox comboStatus;
     private javax.swing.JLabel jLabel1;
@@ -250,9 +229,10 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField textDate;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JFormattedTextField textDate;
     private javax.swing.JTextField textEmail;
     private javax.swing.JTextField textId;
-    private javax.swing.JTextField textMessage;
+    private javax.swing.JTextArea textMessage;
     // End of variables declaration//GEN-END:variables
 }

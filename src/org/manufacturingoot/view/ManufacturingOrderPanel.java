@@ -1,29 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.manufacturingoot.view;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.manufacturingoot.model.ManufacturingOrder;
 import org.manufacturingoot.service.ManufacturingOrderService;
+import org.manufacturingoot.service.exceptions.NonexistentEntityException;
 import org.manufacturingoot.util.Constants;
 
-/**
- *
- * @author Febrian
- */
 public class ManufacturingOrderPanel extends javax.swing.JPanel {
 
     private EntityManagerFactory emf;
 
-    /**
-     * Creates new form ManufacturingOrderPanel
-     */
     public ManufacturingOrderPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
@@ -44,6 +34,7 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
         buttonReload = new javax.swing.JButton();
         buttonUpdate = new javax.swing.JButton();
         buttonNew = new javax.swing.JButton();
+        buttonDelete = new javax.swing.JButton();
 
         jLabel1.setText("Manufacturing OOT");
 
@@ -87,6 +78,13 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
             }
         });
 
+        buttonDelete.setText("Delete");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,6 +98,8 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonUpdate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonNew)
@@ -118,7 +118,8 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonReload)
                     .addComponent(buttonUpdate)
-                    .addComponent(buttonNew))
+                    .addComponent(buttonNew)
+                    .addComponent(buttonDelete))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -166,8 +167,25 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
         new ManufacturingOrderForm(emf, null).setVisible(true);
     }//GEN-LAST:event_buttonNewActionPerformed
 
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        String id = "";
+
+        try {
+            id = tableData.getValueAt(tableData.getSelectedRow(), 0)
+                    .toString();
+            new ManufacturingOrderService(emf).destroy(Long.parseLong(id));
+        } catch (IndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(null, "Pilih baris terlebih dahulu");
+        } catch (NonexistentEntityException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal menghapus data");
+        }
+        
+        buttonReloadActionPerformed(evt);
+    }//GEN-LAST:event_buttonDeleteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonNew;
     private javax.swing.JButton buttonReload;
     private javax.swing.JButton buttonUpdate;
