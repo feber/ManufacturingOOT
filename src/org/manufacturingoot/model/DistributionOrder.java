@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -34,6 +35,12 @@ public class DistributionOrder implements Serializable {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendDate;
+
+    @ManyToOne(optional = false)
+    private ManufacturingOrder order;
+
+    @ManyToOne(optional = false)
+    private SalesDepartment createdBy;
 
     public Long getId() {
         return id;
@@ -81,6 +88,22 @@ public class DistributionOrder implements Serializable {
 
     public void setSendDate(Date sendDate) {
         this.sendDate = sendDate;
+    }
+
+    public ManufacturingOrder getOrder() {
+        return order;
+    }
+
+    public void setOrder(ManufacturingOrder order) {
+        this.order = order;
+    }
+
+    public SalesDepartment getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(SalesDepartment createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

@@ -113,6 +113,18 @@ public class ManufacturingOrderService implements Serializable {
         }
     }
 
+    public ManufacturingOrder findManufacturingOrderByColumn(String column, String search) {
+        EntityManager em = getEntityManager();
+        String raw = String.format("SELECT m FROM ManufacturingOrder m WHERE m.%s = :key", column);
+        try {
+            Query query = em.createQuery(raw);
+            query.setParameter("key", search);
+            return (ManufacturingOrder) query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
     public int getManufacturingOrderCount() {
         EntityManager em = getEntityManager();
         try {

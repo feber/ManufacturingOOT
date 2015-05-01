@@ -1,15 +1,11 @@
 package org.manufacturingoot.view;
 
 import java.awt.event.WindowEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.manufacturingoot.model.Part;
 import org.manufacturingoot.service.PartService;
-import org.manufacturingoot.util.Constants;
 
 public class PartForm extends javax.swing.JFrame {
 
@@ -166,7 +162,7 @@ public class PartForm extends javax.swing.JFrame {
                 textName.requestFocus();
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Gagal melakukan update");;
+                JOptionPane.showMessageDialog(null, "Gagal melakukan update");
             }
         } else {
             currentItem = new Part();

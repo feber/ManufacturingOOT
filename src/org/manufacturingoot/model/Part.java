@@ -27,6 +27,9 @@ public class Part implements Serializable {
 
     private Integer stock;
 
+    @ManyToOne(optional = false)
+    private WarehouseDepartment createdBy;
+
     public Long getId() {
         return id;
     }
@@ -65,6 +68,14 @@ public class Part implements Serializable {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public WarehouseDepartment getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(WarehouseDepartment createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

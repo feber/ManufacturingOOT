@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,6 +32,9 @@ public class ManufacturingOrder implements Serializable {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date receiveDate;
+
+    @ManyToOne(optional = false)
+    private ProductionDepartment createdBy;
 
     public Long getId() {
         return id;
@@ -75,6 +79,14 @@ public class ManufacturingOrder implements Serializable {
         this.receiveDate = receiveDate;
     }
 
+    public ProductionDepartment getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(ProductionDepartment createdBy) {
+        this.createdBy = createdBy;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -97,6 +109,6 @@ public class ManufacturingOrder implements Serializable {
 
     @Override
     public String toString() {
-        return "org.manufacturingoot.model.ManufacturingOrder[ id=" + id + " ]";
+        return email;
     }
 }

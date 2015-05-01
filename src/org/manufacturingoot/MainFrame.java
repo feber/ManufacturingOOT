@@ -8,6 +8,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.manufacturingoot.view.ManufacturingOrderPanel;
 import org.manufacturingoot.view.PartPanel;
+import org.manufacturingoot.view.WorkSchedulePanel;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -25,6 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         menuItemManufacturingOrder = new javax.swing.JMenuItem();
         menuItemPart = new javax.swing.JMenuItem();
+        menuItemWorkSchedule = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,6 +47,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuItemPart);
+
+        menuItemWorkSchedule.setText("Work Schedule");
+        menuItemWorkSchedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemWorkScheduleActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemWorkSchedule);
 
         menuBar.add(jMenu1);
 
@@ -74,6 +84,11 @@ public class MainFrame extends javax.swing.JFrame {
         revalidate();
     }//GEN-LAST:event_menuItemPartActionPerformed
 
+    private void menuItemWorkScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemWorkScheduleActionPerformed
+        setContentPane(new WorkSchedulePanel(emf));
+        revalidate();
+    }//GEN-LAST:event_menuItemWorkScheduleActionPerformed
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -101,5 +116,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemManufacturingOrder;
     private javax.swing.JMenuItem menuItemPart;
+    private javax.swing.JMenuItem menuItemWorkSchedule;
     // End of variables declaration//GEN-END:variables
 }

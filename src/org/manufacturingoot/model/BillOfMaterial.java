@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,6 +31,9 @@ public class BillOfMaterial implements Serializable {
     private List<Part> parts = new ArrayList<>();
 
     private boolean approved;
+
+    @ManyToOne(optional = false)
+    private WarehouseDepartment createdBy;
 
     public Long getId() {
         return id;
@@ -63,6 +67,14 @@ public class BillOfMaterial implements Serializable {
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public WarehouseDepartment getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(WarehouseDepartment createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

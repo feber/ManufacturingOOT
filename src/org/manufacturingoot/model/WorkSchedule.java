@@ -16,7 +16,7 @@ public class WorkSchedule implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
@@ -29,7 +29,10 @@ public class WorkSchedule implements Serializable {
     private Date dueDate;
 
     @Temporal(TemporalType.DATE)
-    private Date endDate;
+    private Date finishDate;
+
+    @ManyToOne(optional = false)
+    private ProductionDepartment createdBy;
 
     public Long getId() {
         return id;
@@ -63,12 +66,20 @@ public class WorkSchedule implements Serializable {
         this.dueDate = dueDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getFinishDate() {
+        return finishDate;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setFinishDate(Date finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public ProductionDepartment getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(ProductionDepartment createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

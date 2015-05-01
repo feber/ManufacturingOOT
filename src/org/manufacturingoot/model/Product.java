@@ -21,18 +21,24 @@ public class Product implements Serializable {
     private String name;
 
     @Column(nullable = false)
-    private float productionCost;
+    private Double productionCost = .0;
 
     @Column(nullable = false)
-    private double price;
+    private Double price = .0;
 
     @Column(nullable = false)
-    private float weight;
+    private Double weight = .0;
 
     private boolean soldable;
 
     @ManyToOne(optional = false)
     private ManufacturingOrder order;
+
+    @ManyToOne(optional = false)
+    private BillOfMaterial billOfMaterial;
+
+    @ManyToOne(optional = false)
+    private ProductionDepartment createdBy;
 
     public Long getId() {
         return id;
@@ -50,27 +56,33 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public float getProductionCost() {
+    public Double getProductionCost() {
+        if (productionCost == 0) {
+            for (Part part : billOfMaterial.getParts()) {
+                productionCost += part.getPrice();
+            }
+            productionCost *= 1.1;
+        }
         return productionCost;
     }
 
-    public void setProductionCost(float productionCost) {
+    public void setProductionCost(Double productionCost) {
         this.productionCost = productionCost;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public float getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
@@ -88,6 +100,23 @@ public class Product implements Serializable {
 
     public void setOrder(ManufacturingOrder order) {
         this.order = order;
+    }
+
+    public BillOfMaterial getBillOfMaterial() {
+        return billOfMaterial;
+    }
+
+    public void setBillOfMaterial(BillOfMaterial billOfMaterial) {
+        this.billOfMaterial = billOfMaterial;
+        getProductionCost();
+    }
+
+    public ProductionDepartment getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(ProductionDepartment createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,6 +32,9 @@ public class SalesForecast implements Serializable {
 
     @ManyToMany
     private List<Product> products = new ArrayList<>();
+
+    @ManyToOne(optional = false)
+    private SalesDepartment createdBy;
 
     public Long getId() {
         return id;
@@ -58,6 +62,14 @@ public class SalesForecast implements Serializable {
 
     public void setProductionProbability(double productionProbability) {
         this.productionProbability = productionProbability;
+    }
+
+    public SalesDepartment getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(SalesDepartment createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override
