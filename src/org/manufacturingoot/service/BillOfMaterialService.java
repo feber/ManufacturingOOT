@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.manufacturingoot.service;
 
 import java.io.Serializable;
@@ -9,14 +14,20 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.manufacturingoot.model.BillOfMaterial;
+import org.manufacturingoot.model.ManufacturingOrder;
+import org.manufacturingoot.model.Product;
+import org.manufacturingoot.model.Part;
 import org.manufacturingoot.service.exceptions.NonexistentEntityException;
 
+/**
+ *
+ * @author Febrian
+ */
 public class BillOfMaterialService implements Serializable {
 
     public BillOfMaterialService(EntityManagerFactory emf) {
         this.emf = emf;
     }
-
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -28,7 +39,25 @@ public class BillOfMaterialService implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Product product = billOfMaterial.getProduct();
+            if (product != null) {
+                product = em.getReference(product.getClass(), product.getId());
+                billOfMaterial.setProduct(product);
+            }
+            Part part = billOfMaterial.getPart();
+            if (part != null) {
+                part = em.getReference(part.getClass(), part.getId());
+                billOfMaterial.setPart(part);
+            }
             em.persist(billOfMaterial);
+            if (product != null) {
+                product.getBillOfMaterials().add(billOfMaterial);
+                product = em.merge(product);
+            }
+            if (part != null) {
+                part.getBillOfMaterials().add(billOfMaterial);
+                part = em.merge(part);
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -42,7 +71,36 @@ public class BillOfMaterialService implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            BillOfMaterial persistentBillOfMaterial = em.find(BillOfMaterial.class, billOfMaterial.getId());
+            Product productOld = persistentBillOfMaterial.getProduct();
+            Product productNew = billOfMaterial.getProduct();
+            Part partOld = persistentBillOfMaterial.getPart();
+            Part partNew = billOfMaterial.getPart();
+            if (productNew != null) {
+                productNew = em.getReference(productNew.getClass(), productNew.getId());
+                billOfMaterial.setProduct(productNew);
+            }
+            if (partNew != null) {
+                partNew = em.getReference(partNew.getClass(), partNew.getId());
+                billOfMaterial.setPart(partNew);
+            }
             billOfMaterial = em.merge(billOfMaterial);
+            if (productOld != null && !productOld.equals(productNew)) {
+                productOld.getBillOfMaterials().remove(billOfMaterial);
+                productOld = em.merge(productOld);
+            }
+            if (productNew != null && !productNew.equals(productOld)) {
+                productNew.getBillOfMaterials().add(billOfMaterial);
+                productNew = em.merge(productNew);
+            }
+            if (partOld != null && !partOld.equals(partNew)) {
+                partOld.getBillOfMaterials().remove(billOfMaterial);
+                partOld = em.merge(partOld);
+            }
+            if (partNew != null && !partNew.equals(partOld)) {
+                partNew.getBillOfMaterials().add(billOfMaterial);
+                partNew = em.merge(partNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -71,6 +129,16 @@ public class BillOfMaterialService implements Serializable {
                 billOfMaterial.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The billOfMaterial with id " + id + " no longer exists.", enfe);
+            }
+            Product product = billOfMaterial.getProduct();
+            if (product != null) {
+                product.getBillOfMaterials().remove(billOfMaterial);
+                product = em.merge(product);
+            }
+            Part part = billOfMaterial.getPart();
+            if (part != null) {
+                part.getBillOfMaterials().remove(billOfMaterial);
+                part = em.merge(part);
             }
             em.remove(billOfMaterial);
             em.getTransaction().commit();
@@ -109,6 +177,19 @@ public class BillOfMaterialService implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(BillOfMaterial.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public BillOfMaterial findBillOfMaterialByFK(Part part, Product product) {
+        EntityManager em = getEntityManager();
+        String raw = "SELECT m FROM BillOfMaterial m WHERE m.part = :x and m.product = :y";
+        try {
+            Query query = em.createQuery(raw);
+            query.setParameter("x", part);
+            query.setParameter("y", product);
+            return (BillOfMaterial) query.getSingleResult();
         } finally {
             em.close();
         }

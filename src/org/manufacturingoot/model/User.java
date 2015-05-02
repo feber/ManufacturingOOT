@@ -11,7 +11,6 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.manufacturingoot.service.SalesDepartmentService;
 
 @MappedSuperclass
 public abstract class User implements Serializable {

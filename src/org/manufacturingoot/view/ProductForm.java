@@ -1,29 +1,41 @@
 package org.manufacturingoot.view;
 
 import java.awt.event.WindowEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.manufacturingoot.model.BillOfMaterial;
-import org.manufacturingoot.service.BillOfMaterialService;
-import org.manufacturingoot.util.Constants;
+import org.manufacturingoot.model.ManufacturingOrder;
+import org.manufacturingoot.model.Product;
+import org.manufacturingoot.service.ManufacturingOrderService;
+import org.manufacturingoot.service.ProductService;
 
-public class BillOfMaterialForm extends javax.swing.JFrame {
+public class ProductForm extends javax.swing.JFrame {
 
-    private BillOfMaterial currentItem;
+    private ManufacturingOrder currentOrder;
+    private Product currentItem;
     private EntityManagerFactory emf;
+    private boolean updateData;
 
-    public BillOfMaterialForm(EntityManagerFactory emf, BillOfMaterial mo) {
+    private ManufacturingOrderService mos;
+
+    public ProductForm(EntityManagerFactory emf, Product mo) {
         initComponents();
         this.emf = emf;
         currentItem = mo;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mos = new ManufacturingOrderService(emf);
+        loadComboManufacturing();
         prepareForm();
 
         setLocationRelativeTo(null);
+    }
+
+    private void loadComboManufacturing() {
+        for (ManufacturingOrder mo : mos.findManufacturingOrderEntities()) {
+            comboManufacturing.addItem(mo);
+        }
     }
 
     /**
@@ -37,22 +49,28 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         buttonSave = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         textId = new javax.swing.JTextField();
-        textDate = new javax.swing.JFormattedTextField();
-        checkBoxAccepted = new javax.swing.JCheckBox();
-        jLabel2 = new javax.swing.JLabel();
-        textNumberOfParts = new javax.swing.JTextField();
-        buttonEdit = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        comboManufacturing = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        textName = new javax.swing.JTextField();
+        textPrice = new javax.swing.JTextField();
+        textWeight = new javax.swing.JTextField();
+        textCost = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        buttonPart = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Manufacturing Order");
+        jLabel1.setText("Work Schedule");
 
-        jLabel4.setText("Request Date");
+        jLabel2.setText("Manufacturing Order");
+
+        jLabel4.setText("Weight");
 
         buttonSave.setText("Save");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
@@ -65,18 +83,29 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
 
         textId.setEnabled(false);
 
-        textDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
-
-        checkBoxAccepted.setText("Accepted");
-
-        jLabel2.setText("Parts");
-
-        textNumberOfParts.setEnabled(false);
-
-        buttonEdit.setText("Edit Parts");
-        buttonEdit.addActionListener(new java.awt.event.ActionListener() {
+        comboManufacturing.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonEditActionPerformed(evt);
+                comboManufacturingActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Name");
+
+        jLabel8.setText("Price");
+
+        textPrice.setText("0");
+
+        textWeight.setText("0");
+
+        textCost.setText("0");
+        textCost.setEnabled(false);
+
+        jLabel3.setText("Cost");
+
+        buttonPart.setText("Set Parts");
+        buttonPart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPartActionPerformed(evt);
             }
         });
 
@@ -91,24 +120,25 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(buttonSave))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
+                            .addComponent(jLabel2)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel3))
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textId)
-                            .addComponent(textDate, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(comboManufacturing, 0, 300, Short.MAX_VALUE)
+                            .addComponent(textName)
+                            .addComponent(textPrice)
+                            .addComponent(textWeight)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(checkBoxAccepted)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(textNumberOfParts, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                                .addComponent(textCost)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(buttonEdit)))))
+                                .addComponent(buttonPart)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,30 +152,35 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
                     .addComponent(textId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(textDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2)
+                    .addComponent(comboManufacturing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textNumberOfParts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonEdit)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel7)
+                    .addComponent(textName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(checkBoxAccepted)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(textPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(textWeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(buttonPart))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(buttonSave)
                 .addContainerGap())
         );
-
-        jTextField1.setText("jTextField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(257, Short.MAX_VALUE))
+            .addGap(0, 456, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -154,10 +189,7 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(186, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(112, 112, 112))
+            .addGap(0, 254, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -169,10 +201,9 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
-        BillOfMaterialService mos = new BillOfMaterialService(emf);
+        ProductService mos = new ProductService(emf);
 
         if (currentItem != null) {
-            loadForm();
             try {
                 mos.edit(currentItem);
             } catch (Exception ex) {
@@ -180,7 +211,7 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Gagal melakukan update");
             }
         } else {
-            currentItem = new BillOfMaterial();
+            currentItem = new Product();
             loadForm();
             mos.create(currentItem);
         }
@@ -189,45 +220,58 @@ public class BillOfMaterialForm extends javax.swing.JFrame {
         dispatchEvent(event);
     }//GEN-LAST:event_buttonSaveActionPerformed
 
-    private void buttonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditActionPerformed
+    private void comboManufacturingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboManufacturingActionPerformed
+        currentOrder = mos.findManufacturingOrderByColumn(
+                "email", comboManufacturing.getSelectedItem().toString());
+        System.out.println(currentOrder);
+    }//GEN-LAST:event_comboManufacturingActionPerformed
+
+    private void buttonPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPartActionPerformed
+        if (currentItem.getId() == null) {
+            ProductService ps = new ProductService(emf);
+            loadForm();
+            ps.create(currentItem);
+        }
         new ChoosePartPanel(emf, currentItem).setVisible(true);
-    }//GEN-LAST:event_buttonEditActionPerformed
+    }//GEN-LAST:event_buttonPartActionPerformed
 
     private void loadForm() {
-        String date = textDate.getText().trim();
-        try {
-            currentItem.setRequestDate(
-                    new SimpleDateFormat(Constants.DATE_FORMAT).parse(date));
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Date tidak dapat diolah");
-        }
+        currentItem.setName(textName.getText());
+        currentItem.setPrice(Double.parseDouble(textPrice.getText()));
+        currentItem.setProductionCost(Double.parseDouble(textCost.getText()));
+        currentItem.setWeight(Double.parseDouble(textWeight.getText()));
+        currentItem.setOrder(currentOrder);
     }
 
     private void prepareForm() {
         if (currentItem == null) {
-            textDate.setText(
-                    new SimpleDateFormat(Constants.DATE_FORMAT).format(new Date()));
-            currentItem = new BillOfMaterial();
+            currentItem = new Product();
         } else {
             textId.setText(currentItem.getId().toString());
-            String date = new SimpleDateFormat(Constants.DATE_FORMAT).format(currentItem.getRequestDate());
-            textDate.setText(date);
+            textName.setText(currentItem.getName());
+            textPrice.setText(currentItem.getPrice().toString());
+            textCost.setText(currentItem.getProductionCost().toString());
+            textWeight.setText(currentItem.getWeight().toString());
+            comboManufacturing.setSelectedItem(currentItem.getOrder());
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonEdit;
+    private javax.swing.JButton buttonPart;
     private javax.swing.JButton buttonSave;
-    private javax.swing.JCheckBox checkBoxAccepted;
+    private javax.swing.JComboBox comboManufacturing;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JFormattedTextField textDate;
+    private javax.swing.JTextField textCost;
     private javax.swing.JTextField textId;
-    private javax.swing.JTextField textNumberOfParts;
+    private javax.swing.JTextField textName;
+    private javax.swing.JTextField textPrice;
+    private javax.swing.JTextField textWeight;
     // End of variables declaration//GEN-END:variables
 }

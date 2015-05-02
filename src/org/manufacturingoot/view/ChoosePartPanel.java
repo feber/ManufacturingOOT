@@ -1,36 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.manufacturingoot.view;
 
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import org.manufacturingoot.model.BillOfMaterial;
 import org.manufacturingoot.model.Part;
+import org.manufacturingoot.model.Product;
+import org.manufacturingoot.service.BillOfMaterialService;
 import org.manufacturingoot.service.PartService;
-import org.manufacturingoot.util.Constants;
+import org.manufacturingoot.service.ProductService;
 
-/**
- *
- * @author Febrian
- */
 public class ChoosePartPanel extends javax.swing.JFrame {
 
     private EntityManagerFactory emf;
-    private BillOfMaterial currentBom;
+    private Product product;
+    BillOfMaterialService boms;
 
     /**
      * Creates new form ChoosePartPanel
      */
-    public ChoosePartPanel(EntityManagerFactory emf, BillOfMaterial bom) {
+    public ChoosePartPanel(EntityManagerFactory emf, Product product) {
         initComponents();
         this.emf = emf;
-        this.currentBom = bom;
+        this.product = product == null ? new Product() : product;
+        this.boms = new BillOfMaterialService(emf);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         loadTable();
     }
@@ -42,11 +37,12 @@ public class ChoosePartPanel extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tableData.getModel();
 
         for (Part current : rows) {
+            BillOfMaterial temp = boms.findBillOfMaterialByFK(current, product);
             Object[] data = {
                 current.getId(),
                 current.getName(),
                 current.getStock(),
-                "0"
+                temp.getAmount()
             };
             model.addRow(data);
         }
@@ -128,6 +124,7 @@ public class ChoosePartPanel extends javax.swing.JFrame {
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
         // TODO add your handling code here:
         PartService ps = new PartService(emf);
+        ProductService productService = new ProductService(emf);
 
         DefaultTableModel tableModel = (DefaultTableModel) tableData.getModel();
         for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -136,9 +133,19 @@ public class ChoosePartPanel extends javax.swing.JFrame {
                 try {
                     long id = Long.parseLong(tableModel.getValueAt(i, 0).toString());
                     Part part = ps.findPart(id);
-                    part.setStock(part.getStock() - total);
+                    part.setStock(part.getStock() - (total - part.getStock()));
                     ps.edit(part);
-                    currentBom.addPart(part, total);
+
+                    BillOfMaterial bom = boms.findBillOfMaterialByFK(part, product);
+                    bom.setRequestDate(new Date());
+                    bom.setAmount(total);
+                    bom.setPart(part);
+                    bom.setProduct(product);
+                    boms.edit(bom);
+
+                    // update belum
+                    product.calculateCost();
+                    productService.edit(product);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

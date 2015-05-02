@@ -74,23 +74,25 @@ public class Main {
         PartService partService = new PartService(emf);
         partService.create(part);
 
-        BillOfMaterial bom = new BillOfMaterial();
-        bom.setApproved(true);
-        bom.setRequestDate(new Date());
-        bom.addPart(part, 1);
-        bom.setCreatedBy(wd);
-        BillOfMaterialService materialService = new BillOfMaterialService(emf);
-        materialService.create(bom);
-
         Product product = new Product();
         product.setName("mos");
         product.setOrder(mo);
-        product.setBillOfMaterial(bom);
-        product.setPrice(product.getProductionCost() * 1.2);
         product.setWeight(1D);
         product.setCreatedBy(pd);
         ProductService ps = new ProductService(emf);
         ps.create(product);
+
+        BillOfMaterial bom = new BillOfMaterial();
+        bom.setRequestDate(new Date());
+        bom.setCreatedBy(wd);
+        bom.setPart(part);
+        bom.setProduct(product);
+        bom.setAmount(12);
+        BillOfMaterialService materialService = new BillOfMaterialService(emf);
+        materialService.create(bom);
+
+        product.setPrice(product.getProductionCost() * 1.2);
+        ps.edit(product);
 
         SalesForecast sf = new SalesForecast();
         sf.setDate(new Date());

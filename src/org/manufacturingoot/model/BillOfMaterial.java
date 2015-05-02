@@ -1,39 +1,34 @@
 package org.manufacturingoot.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 public class BillOfMaterial implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date requestDate;
 
-    @OneToMany(cascade = CascadeType.MERGE)
-    private List<Part> parts = new ArrayList<>();
+    @ManyToOne
+    private Product product;
 
-    private boolean approved;
+    @ManyToOne
+    private Part part;
 
-    @ManyToOne(optional = false)
+    private Integer amount;
+
+    @ManyToOne
     private WarehouseDepartment createdBy;
 
     public Long getId() {
@@ -52,22 +47,30 @@ public class BillOfMaterial implements Serializable {
         this.requestDate = requestDate;
     }
 
-    public List<Part> getParts() {
-        return parts;
+    public Product getProduct() {
+        return product;
     }
 
-    public void addPart(Part p, int total) {
-        for (int i = 0; i < total; i++) {
-            parts.add(p);
-        }
+    public void setProduct(Product product) {
+        this.product = product;
+        this.product.getBillOfMaterials().add(this);
     }
 
-    public boolean isApproved() {
-        return approved;
+    public Part getPart() {
+        return part;
     }
 
-    public void setApproved(boolean approved) {
-        this.approved = approved;
+    public void setPart(Part part) {
+        this.part = part;
+        this.part.getBillOfMaterials().add(this);
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public WarehouseDepartment getCreatedBy() {
@@ -76,30 +79,5 @@ public class BillOfMaterial implements Serializable {
 
     public void setCreatedBy(WarehouseDepartment createdBy) {
         this.createdBy = createdBy;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BillOfMaterial)) {
-            return false;
-        }
-        BillOfMaterial other = (BillOfMaterial) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "org.manufacturingoot.model.BillOfMaterial[ id=" + id + " ]";
     }
 }

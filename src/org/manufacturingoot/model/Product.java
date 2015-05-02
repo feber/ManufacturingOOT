@@ -1,12 +1,16 @@
 package org.manufacturingoot.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Product implements Serializable {
@@ -32,10 +36,11 @@ public class Product implements Serializable {
     @ManyToOne(optional = false)
     private ManufacturingOrder order;
 
-    @ManyToOne(optional = false)
-    private BillOfMaterial billOfMaterial;
+    @OneToMany
+    @JoinColumn
+    private List<BillOfMaterial> billOfMaterials = new ArrayList<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private ProductionDepartment createdBy;
 
     public Long getId() {
@@ -55,12 +60,6 @@ public class Product implements Serializable {
     }
 
     public Double getProductionCost() {
-        if (productionCost == 0) {
-            for (Part part : billOfMaterial.getParts()) {
-                productionCost += part.getPrice();
-            }
-            productionCost *= 1.1;
-        }
         return productionCost;
     }
 
@@ -92,21 +91,23 @@ public class Product implements Serializable {
         this.order = order;
     }
 
-    public BillOfMaterial getBillOfMaterial() {
-        return billOfMaterial;
-    }
-
-    public void setBillOfMaterial(BillOfMaterial billOfMaterial) {
-        this.billOfMaterial = billOfMaterial;
-        getProductionCost();
-    }
-
     public ProductionDepartment getCreatedBy() {
         return createdBy;
     }
 
     public void setCreatedBy(ProductionDepartment createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public List<BillOfMaterial> getBillOfMaterials() {
+        return billOfMaterials;
+    }
+
+    public void calculateCost() {
+        productionCost = 0.0;
+        for (BillOfMaterial bom : billOfMaterials) {
+            productionCost += bom.getPart().getPrice();
+        }
     }
 
     @Override
@@ -133,5 +134,4 @@ public class Product implements Serializable {
     public String toString() {
         return "org.manufacturingoot.model.Product[ id=" + id + " ]";
     }
-
 }

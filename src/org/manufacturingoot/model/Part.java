@@ -1,12 +1,15 @@
 package org.manufacturingoot.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Part implements Serializable {
@@ -27,8 +30,12 @@ public class Part implements Serializable {
 
     private Integer stock;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private WarehouseDepartment createdBy;
+    
+    @OneToMany
+    @JoinColumn
+    private List<BillOfMaterial> billOfMaterials;
 
     public Long getId() {
         return id;
@@ -76,6 +83,10 @@ public class Part implements Serializable {
 
     public void setCreatedBy(WarehouseDepartment createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public List<BillOfMaterial> getBillOfMaterials() {
+        return billOfMaterials;
     }
 
     @Override

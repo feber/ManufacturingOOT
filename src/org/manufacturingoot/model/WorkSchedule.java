@@ -31,7 +31,7 @@ public class WorkSchedule implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date finishDate;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private ProductionDepartment createdBy;
 
     public Long getId() {

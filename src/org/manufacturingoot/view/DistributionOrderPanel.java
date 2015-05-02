@@ -5,16 +5,16 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.manufacturingoot.model.BillOfMaterial;
-import org.manufacturingoot.service.BillOfMaterialService;
+import org.manufacturingoot.model.DistributionOrder;
+import org.manufacturingoot.service.DistributionOrderService;
 import org.manufacturingoot.service.exceptions.NonexistentEntityException;
 import org.manufacturingoot.util.Constants;
 
-public class BillOfMaterialPanel extends javax.swing.JPanel {
+public class DistributionOrderPanel extends javax.swing.JPanel {
 
     private EntityManagerFactory emf;
 
-    public BillOfMaterialPanel(EntityManagerFactory emf) {
+    public DistributionOrderPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
     }
@@ -36,18 +36,18 @@ public class BillOfMaterialPanel extends javax.swing.JPanel {
         buttonNew = new javax.swing.JButton();
         buttonDelete = new javax.swing.JButton();
 
-        jLabel1.setText("Bill of Material");
+        jLabel1.setText("Distribution Order");
 
         tableData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Request Date", "Approved", "Created By"
+                "ID", "Full Name", "Email", "Address", "Send Date", "Phone Number", "Order From"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, true, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -125,19 +125,22 @@ public class BillOfMaterialPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        BillOfMaterialService mos = new BillOfMaterialService(emf);
-        List<BillOfMaterial> rows = mos.findBillOfMaterialEntities();
+        DistributionOrderService mos = new DistributionOrderService(emf);
+        List<DistributionOrder> rows = mos.findDistributionOrderEntities();
 
         DefaultTableModel model = (DefaultTableModel) tableData.getModel();
         model.setNumRows(0);
 
         for (int i = 0; i < rows.size(); i++) {
-            BillOfMaterial current = rows.get(i);
+            DistributionOrder current = rows.get(i);
             Object[] data = {
                 current.getId(),
-                new SimpleDateFormat(Constants.DATETIME_FORMAT).format(current.getRequestDate()),
-                current.isApproved(),
-                current.getCreatedBy()
+                current.getFullName(),
+                current.getEmail(),
+                current.getAddress(),
+                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getSendDate()),
+                current.getPhoneNumber(),
+                current.getOrder().getEmail()
             };
             model.addRow(data);
         }
@@ -147,23 +150,23 @@ public class BillOfMaterialPanel extends javax.swing.JPanel {
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
         String id = "";
-        BillOfMaterial selected = null;
+        DistributionOrder selected = null;
 
         try {
             id = tableData.getValueAt(tableData.getSelectedRow(), 0)
                     .toString();
 
-            selected = new BillOfMaterialService(emf)
-                    .findBillOfMaterial(Long.parseLong(id));
+            selected = new DistributionOrderService(emf)
+                    .findDistributionOrder(Long.parseLong(id));
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("no row selected, form for new data");
         } finally {
-            new BillOfMaterialForm(emf, selected).setVisible(true);
+            new DistributionOrderForm(emf, selected).setVisible(true);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
-        new BillOfMaterialForm(emf, null).setVisible(true);
+        new DistributionOrderForm(emf, null).setVisible(true);
     }//GEN-LAST:event_buttonNewActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -172,14 +175,14 @@ public class BillOfMaterialPanel extends javax.swing.JPanel {
         try {
             id = tableData.getValueAt(tableData.getSelectedRow(), 0)
                     .toString();
-            new BillOfMaterialService(emf).destroy(Long.parseLong(id));
+            new DistributionOrderService(emf).destroy(Long.parseLong(id));
         } catch (IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "Pilih baris terlebih dahulu");
         } catch (NonexistentEntityException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Gagal menghapus data");
         }
-        
+
         buttonReloadActionPerformed(evt);
     }//GEN-LAST:event_buttonDeleteActionPerformed
 

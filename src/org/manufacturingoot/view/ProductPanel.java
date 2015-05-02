@@ -1,20 +1,18 @@
 package org.manufacturingoot.view;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.manufacturingoot.model.WorkSchedule;
-import org.manufacturingoot.service.WorkScheduleService;
+import org.manufacturingoot.model.Product;
+import org.manufacturingoot.service.ProductService;
 import org.manufacturingoot.service.exceptions.NonexistentEntityException;
-import org.manufacturingoot.util.Constants;
 
-public class WorkSchedulePanel extends javax.swing.JPanel {
+public class ProductPanel extends javax.swing.JPanel {
 
     private EntityManagerFactory emf;
 
-    public WorkSchedulePanel(EntityManagerFactory emf) {
+    public ProductPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
     }
@@ -36,14 +34,14 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
         buttonNew = new javax.swing.JButton();
         buttonDelete = new javax.swing.JButton();
 
-        jLabel1.setText("Work Schedule");
+        jLabel1.setText("Product");
 
         tableData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Email", "Message", "Receive Date", "Status"
+                "ID", "Name", "Price", "Production Cost", "Weight"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -125,20 +123,20 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        WorkScheduleService mos = new WorkScheduleService(emf);
-        List<WorkSchedule> rows = mos.findWorkScheduleEntities();
+        ProductService mos = new ProductService(emf);
+        List<Product> rows = mos.findProductEntities();
 
         DefaultTableModel model = (DefaultTableModel) tableData.getModel();
         model.setNumRows(0);
 
-        for (int i = 0; i < rows.size(); i++) {
-            WorkSchedule current = rows.get(i);
+        for (Product current : rows) {
             Object[] data = {
                 current.getId(),
+                current.getName(),
+                current.getPrice(),
+                current.getProductionCost(),
+                current.getWeight(),
                 current.getOrder().getEmail(),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getStartDate()),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getDueDate()),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getFinishDate())
             };
             model.addRow(data);
         }
@@ -148,23 +146,23 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
         String id = "";
-        WorkSchedule selected = null;
+        Product selected = null;
 
         try {
             id = tableData.getValueAt(tableData.getSelectedRow(), 0)
                     .toString();
 
-            selected = new WorkScheduleService(emf)
-                    .findWorkSchedule(Long.parseLong(id));
+            selected = new ProductService(emf)
+                    .findProduct(Long.parseLong(id));
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("no row selected, form for new data");
         } finally {
-            new WorkScheduleForm(emf, selected).setVisible(true);
+            new ProductForm(emf, selected).setVisible(true);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
-        new WorkScheduleForm(emf, null).setVisible(true);
+        new ProductForm(emf, null).setVisible(true);
     }//GEN-LAST:event_buttonNewActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -173,7 +171,7 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
         try {
             id = tableData.getValueAt(tableData.getSelectedRow(), 0)
                     .toString();
-            new WorkScheduleService(emf).destroy(Long.parseLong(id));
+            new ProductService(emf).destroy(Long.parseLong(id));
         } catch (IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "Pilih baris terlebih dahulu");
         } catch (NonexistentEntityException ex) {

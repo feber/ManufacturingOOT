@@ -33,7 +33,7 @@ public class SalesForecast implements Serializable {
     @ManyToMany
     private List<Product> products = new ArrayList<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private SalesDepartment createdBy;
 
     public Long getId() {

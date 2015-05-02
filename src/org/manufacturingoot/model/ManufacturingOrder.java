@@ -33,7 +33,7 @@ public class ManufacturingOrder implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date receiveDate;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private ProductionDepartment createdBy;
 
     public Long getId() {

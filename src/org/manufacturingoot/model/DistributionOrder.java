@@ -39,7 +39,7 @@ public class DistributionOrder implements Serializable {
     @ManyToOne(optional = false)
     private ManufacturingOrder order;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private SalesDepartment createdBy;
 
     public Long getId() {

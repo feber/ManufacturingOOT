@@ -5,13 +5,13 @@
     <class>org.manufacturingoot.model.ManufacturingOrder</class>
     <class>org.manufacturingoot.model.Product</class>
     <class>org.manufacturingoot.model.Part</class>
-    <class>org.manufacturingoot.model.BillOfMaterial</class>
     <class>org.manufacturingoot.model.ProductionDepartment</class>
     <class>org.manufacturingoot.model.WarehouseDepartment</class>
     <class>org.manufacturingoot.model.SalesDepartment</class>
     <class>org.manufacturingoot.model.SalesForecast</class>
     <class>org.manufacturingoot.model.DistributionOrder</class>
     <class>org.manufacturingoot.model.WorkSchedule</class>
+    <class>org.manufacturingoot.model.BillOfMaterial</class>
     <properties>
       <!-- edit this file according to your database url -->
       <!-- here I use MySQL -->
@@ -19,7 +19,7 @@
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value=""/>
-      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
 </persistence>
