@@ -30,7 +30,7 @@ public class WarehouseDepartment extends User implements Serializable {
 
     @Override
     public String toString() {
-        return "org.manufacturingoot.model.WarehouseDepartment[ username=" + username + " ]";
+        return username;
     }
 
 }

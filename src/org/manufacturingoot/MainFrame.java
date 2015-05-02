@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.manufacturingoot.view.BillOfMaterialPanel;
 import org.manufacturingoot.view.ManufacturingOrderPanel;
 import org.manufacturingoot.view.PartPanel;
 import org.manufacturingoot.view.WorkSchedulePanel;
@@ -24,6 +25,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        menuItemBillOfMaterial = new javax.swing.JMenuItem();
         menuItemManufacturingOrder = new javax.swing.JMenuItem();
         menuItemPart = new javax.swing.JMenuItem();
         menuItemWorkSchedule = new javax.swing.JMenuItem();
@@ -31,6 +33,14 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jMenu1.setText("File");
+
+        menuItemBillOfMaterial.setText("Bill of Material");
+        menuItemBillOfMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemBillOfMaterialActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemBillOfMaterial);
 
         menuItemManufacturingOrder.setText("Manufacturing Order");
         menuItemManufacturingOrder.addActionListener(new java.awt.event.ActionListener() {
@@ -89,6 +99,11 @@ public class MainFrame extends javax.swing.JFrame {
         revalidate();
     }//GEN-LAST:event_menuItemWorkScheduleActionPerformed
 
+    private void menuItemBillOfMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemBillOfMaterialActionPerformed
+        setContentPane(new BillOfMaterialPanel(emf));
+        revalidate();
+    }//GEN-LAST:event_menuItemBillOfMaterialActionPerformed
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -114,6 +129,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem menuItemBillOfMaterial;
     private javax.swing.JMenuItem menuItemManufacturingOrder;
     private javax.swing.JMenuItem menuItemPart;
     private javax.swing.JMenuItem menuItemWorkSchedule;

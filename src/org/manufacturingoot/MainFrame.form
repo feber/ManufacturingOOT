@@ -9,6 +9,14 @@
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemBillOfMaterial">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Bill of Material"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemBillOfMaterialActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuItemManufacturingOrder">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Manufacturing Order"/>

@@ -126,5 +126,4 @@ public class BillOfMaterialService implements Serializable {
             em.close();
         }
     }
-
 }
