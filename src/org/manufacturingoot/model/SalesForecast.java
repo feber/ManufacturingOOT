@@ -56,6 +56,12 @@ public class SalesForecast implements Serializable {
         return products;
     }
 
+    public void addPart(Product p, int total) {
+        for (int i = 0; i < total; i++) {
+            products.add(p);
+        }
+    }
+
     public double getProductionProbability() {
         return productionProbability;
     }

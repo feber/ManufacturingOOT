@@ -29,8 +29,6 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private Double weight = .0;
 
-    private boolean soldable;
-
     @ManyToOne(optional = false)
     private ManufacturingOrder order;
 
@@ -84,14 +82,6 @@ public class Product implements Serializable {
 
     public void setWeight(Double weight) {
         this.weight = weight;
-    }
-
-    public boolean isSoldable() {
-        return soldable;
-    }
-
-    public void setSoldable(boolean soldable) {
-        this.soldable = soldable;
     }
 
     public ManufacturingOrder getOrder() {

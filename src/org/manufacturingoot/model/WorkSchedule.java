@@ -20,7 +20,7 @@ public class WorkSchedule implements Serializable {
     private Long id;
 
     @ManyToOne(optional = false)
-    private ManufacturingOrder manufacturingOrder;
+    private ManufacturingOrder order;
 
     @Temporal(TemporalType.DATE)
     private Date startDate;
@@ -42,12 +42,12 @@ public class WorkSchedule implements Serializable {
         this.id = id;
     }
 
-    public ManufacturingOrder getManufacturingOrder() {
-        return manufacturingOrder;
+    public ManufacturingOrder getOrder() {
+        return order;
     }
 
-    public void setManufacturingOrder(ManufacturingOrder manufacturingOrder) {
-        this.manufacturingOrder = manufacturingOrder;
+    public void setOrder(ManufacturingOrder order) {
+        this.order = order;
     }
 
     public Date getStartDate() {

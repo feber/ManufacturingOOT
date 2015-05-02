@@ -232,7 +232,7 @@ public class WorkScheduleForm extends javax.swing.JFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Date tidak dapat diolah");
         }
-        currentItem.setManufacturingOrder(currentOrder);
+        currentItem.setOrder(currentOrder);
     }
 
     private void prepareForm() {
@@ -254,7 +254,7 @@ public class WorkScheduleForm extends javax.swing.JFrame {
             textDueDate.setText(date);
             date = new SimpleDateFormat(Constants.DATE_FORMAT).format(currentItem.getFinishDate());
             textFinishDate.setText(date);
-            comboManufacturing.setSelectedItem(currentItem.getManufacturingOrder());
+            comboManufacturing.setSelectedItem(currentItem.getOrder());
         }
     }
 

@@ -135,7 +135,7 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
             WorkSchedule current = rows.get(i);
             Object[] data = {
                 current.getId(),
-                current.getManufacturingOrder().getEmail(),
+                current.getOrder().getEmail(),
                 new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getStartDate()),
                 new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getDueDate()),
                 new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getFinishDate())

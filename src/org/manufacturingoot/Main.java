@@ -87,7 +87,6 @@ public class Main {
         product.setOrder(mo);
         product.setBillOfMaterial(bom);
         product.setPrice(product.getProductionCost() * 1.2);
-        product.setSoldable(true);
         product.setWeight(1D);
         product.setCreatedBy(pd);
         ProductService ps = new ProductService(emf);
@@ -116,7 +115,7 @@ public class Main {
         ws.setDueDate(new Date());
         ws.setStartDate(new Date());
         ws.setFinishDate(new Date());
-        ws.setManufacturingOrder(mo);
+        ws.setOrder(mo);
         ws.setCreatedBy(pd);
         WorkScheduleService wss = new WorkScheduleService(emf);
         wss.create(ws);
