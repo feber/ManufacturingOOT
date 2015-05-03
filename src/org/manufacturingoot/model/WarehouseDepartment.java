@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 @Entity
 public class WarehouseDepartment extends User implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Override
     public int hashCode() {
         int hash = 0;
