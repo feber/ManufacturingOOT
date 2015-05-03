@@ -64,6 +64,7 @@ public class ChoosePartPanel extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Choose Parts");
 
         tableData.setModel(new javax.swing.table.DefaultTableModel(
