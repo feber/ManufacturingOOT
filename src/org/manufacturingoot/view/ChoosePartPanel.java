@@ -3,20 +3,23 @@ package org.manufacturingoot.view;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import org.manufacturingoot.model.BillOfMaterial;
 import org.manufacturingoot.model.Part;
 import org.manufacturingoot.model.Product;
+import org.manufacturingoot.model.ProductionDepartment;
 import org.manufacturingoot.service.BillOfMaterialService;
 import org.manufacturingoot.service.PartService;
 import org.manufacturingoot.service.ProductService;
+import org.manufacturingoot.util.SessionUtil;
 
 public class ChoosePartPanel extends javax.swing.JFrame {
 
     private EntityManagerFactory emf;
     private Product product;
-    BillOfMaterialService boms;
+    private BillOfMaterialService boms;
 
     /**
      * Creates new form ChoosePartPanel
@@ -37,12 +40,18 @@ public class ChoosePartPanel extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tableData.getModel();
 
         for (Part current : rows) {
-            BillOfMaterial temp = boms.findBillOfMaterialByFK(current, product);
+            int amount = 0;
+            try {
+                BillOfMaterial temp = boms.findBillOfMaterialByFK(current, product);
+                amount = temp.getAmount();
+            } catch (NoResultException nre) {
+                System.out.println("amount = 0");
+            }
             Object[] data = {
                 current.getId(),
                 current.getName(),
                 current.getStock(),
-                temp.getAmount()
+                amount
             };
             model.addRow(data);
         }
@@ -134,21 +143,30 @@ public class ChoosePartPanel extends javax.swing.JFrame {
                 try {
                     long id = Long.parseLong(tableModel.getValueAt(i, 0).toString());
                     Part part = ps.findPart(id);
-                    part.setStock(part.getStock() - (total - part.getStock()));
+                    part.setStock(part.getStock() - total);
                     ps.edit(part);
 
-                    BillOfMaterial bom = boms.findBillOfMaterialByFK(part, product);
+                    BillOfMaterial bom = null;
+                    try {
+                        bom = boms.findBillOfMaterialByFK(part, product);
+                    } catch (NoResultException nre) {
+                        System.out.println("creating new");
+                        bom = new BillOfMaterial();
+                    }
                     bom.setRequestDate(new Date());
                     bom.setAmount(total);
                     bom.setPart(part);
                     bom.setProduct(product);
                     boms.edit(bom);
-
-                    // update belum
-                    product.calculateCost();
-                    productService.edit(product);
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                } finally {
+                    product.calculateCost();
+                    try {
+                        productService.edit(product);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }

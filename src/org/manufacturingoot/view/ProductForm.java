@@ -10,6 +10,7 @@ import org.manufacturingoot.model.ManufacturingOrder;
 import org.manufacturingoot.model.Product;
 import org.manufacturingoot.model.ProductionDepartment;
 import org.manufacturingoot.service.ManufacturingOrderService;
+import org.manufacturingoot.service.PartService;
 import org.manufacturingoot.service.ProductService;
 import org.manufacturingoot.util.SessionUtil;
 
@@ -229,17 +230,22 @@ public class ProductForm extends javax.swing.JFrame {
     }//GEN-LAST:event_comboManufacturingActionPerformed
 
     private void buttonPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPartActionPerformed
-        if (currentItem.getId() == null) {
-            ProductService ps = new ProductService(emf);
-            loadForm();
-            ps.create(currentItem);
+        PartService partService = new PartService(emf);
+        if (partService.getPartCount() > 0) {
+            if (currentItem.getId() == null) {
+                ProductService ps = new ProductService(emf);
+                loadForm();
+                ps.create(currentItem);
+            }
+            new ChoosePartPanel(emf, currentItem).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Tidak ada part yang terdaftar");
         }
-        new ChoosePartPanel(emf, currentItem).setVisible(true);
     }//GEN-LAST:event_buttonPartActionPerformed
 
     private void loadForm() {
         currentItem.setName(textName.getText());
-        currentItem.setPrice(Double.parseDouble(textPrice.getText()));
+        // currentItem.setPrice(Double.parseDouble(textPrice.getText()));
         currentItem.setProductionCost(Double.parseDouble(textCost.getText()));
         currentItem.setWeight(Double.parseDouble(textWeight.getText()));
         currentItem.setOrder(currentOrder);

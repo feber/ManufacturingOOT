@@ -84,7 +84,6 @@ public class Main {
 
         BillOfMaterial bom = new BillOfMaterial();
         bom.setRequestDate(new Date());
-        bom.setCreatedBy(wd);
         bom.setPart(part);
         bom.setProduct(product);
         bom.setAmount(12);
