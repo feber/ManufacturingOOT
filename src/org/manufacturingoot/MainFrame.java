@@ -1,6 +1,5 @@
 package org.manufacturingoot;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -8,10 +7,12 @@ import javax.persistence.Persistence;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.manufacturingoot.model.SalesForecast;
 import org.manufacturingoot.view.DistributionOrderPanel;
 import org.manufacturingoot.view.ManufacturingOrderPanel;
 import org.manufacturingoot.view.PartPanel;
 import org.manufacturingoot.view.ProductPanel;
+import org.manufacturingoot.view.SalesForecastPanel;
 import org.manufacturingoot.view.WorkSchedulePanel;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -21,6 +22,7 @@ public class MainFrame extends javax.swing.JFrame {
     private DistributionOrderPanel distributionOrderPanel = new DistributionOrderPanel(emf);
     private PartPanel partPanel = new PartPanel(emf);
     private ProductPanel productPanel = new ProductPanel(emf);
+    private SalesForecastPanel forecastPanel = new SalesForecastPanel(emf);
     private WorkSchedulePanel workSchedulePanel = new WorkSchedulePanel(emf);
 
     public MainFrame() {
@@ -29,9 +31,10 @@ public class MainFrame extends javax.swing.JFrame {
         cardPanel.add(distributionOrderPanel);
         cardPanel.add(partPanel);
         cardPanel.add(productPanel);
+        cardPanel.add(forecastPanel);
         cardPanel.add(workSchedulePanel);
 
-        setSize(800, 400);
+        setSize(800, 600);
     }
 
     private void setPanelVisibility(JPanel key) {
@@ -40,6 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
             distributionOrderPanel,
             partPanel,
             productPanel,
+            forecastPanel,
             workSchedulePanel
         };
 
@@ -62,21 +66,16 @@ public class MainFrame extends javax.swing.JFrame {
         buttonProduct = new javax.swing.JButton();
         buttonPart = new javax.swing.JButton();
         buttonWorkSchedule = new javax.swing.JButton();
+        buttonSalesForecast = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        menuItemDistributionPanel = new javax.swing.JMenuItem();
-        menuItemProduct = new javax.swing.JMenuItem();
-        menuItemManufacturingOrder = new javax.swing.JMenuItem();
-        menuItemPart = new javax.swing.JMenuItem();
-        menuItemWorkSchedule = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuItemExit = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         cardPanel.setLayout(new java.awt.CardLayout());
 
-        buttonDistributionOrder.setFont(new java.awt.Font("Segoe WP", 0, 12)); // NOI18N
+        buttonDistributionOrder.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         buttonDistributionOrder.setText("Distribution Order");
         buttonDistributionOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,7 +83,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        buttonManufacturingOrder1.setFont(new java.awt.Font("Segoe WP", 0, 12)); // NOI18N
+        buttonManufacturingOrder1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         buttonManufacturingOrder1.setText("Manufacturing Order");
         buttonManufacturingOrder1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,7 +91,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        buttonProduct.setFont(new java.awt.Font("Segoe WP", 0, 12)); // NOI18N
+        buttonProduct.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         buttonProduct.setText("Product");
         buttonProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,7 +99,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        buttonPart.setFont(new java.awt.Font("Segoe WP", 0, 12)); // NOI18N
+        buttonPart.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         buttonPart.setText("Part");
         buttonPart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,11 +107,19 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        buttonWorkSchedule.setFont(new java.awt.Font("Segoe WP", 0, 12)); // NOI18N
+        buttonWorkSchedule.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         buttonWorkSchedule.setText("Work Schedule");
         buttonWorkSchedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonWorkScheduleActionPerformed(evt);
+            }
+        });
+
+        buttonSalesForecast.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        buttonSalesForecast.setText("Sales Forecast");
+        buttonSalesForecast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSalesForecastActionPerformed(evt);
             }
         });
 
@@ -127,7 +134,8 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(buttonManufacturingOrder1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonPart, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonWorkSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonWorkSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonSalesForecast, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
@@ -142,52 +150,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonPart, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSalesForecast, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonWorkSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
-
-        menuItemDistributionPanel.setText("Distribution Order");
-        menuItemDistributionPanel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemDistributionPanelActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuItemDistributionPanel);
-
-        menuItemProduct.setText("Product");
-        menuItemProduct.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemProductActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuItemProduct);
-
-        menuItemManufacturingOrder.setText("Manufacturing Order");
-        menuItemManufacturingOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemManufacturingOrderActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuItemManufacturingOrder);
-
-        menuItemPart.setText("Part");
-        menuItemPart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemPartActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuItemPart);
-
-        menuItemWorkSchedule.setText("Work Schedule");
-        menuItemWorkSchedule.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemWorkScheduleActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuItemWorkSchedule);
-        jMenu1.add(jSeparator1);
 
         menuItemExit.setText("Exit");
         menuItemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -225,31 +194,6 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuItemManufacturingOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemManufacturingOrderActionPerformed
-        setContentPane(new ManufacturingOrderPanel(emf));
-        revalidate();
-    }//GEN-LAST:event_menuItemManufacturingOrderActionPerformed
-
-    private void menuItemPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPartActionPerformed
-        setContentPane(new PartPanel(emf));
-        revalidate();
-    }//GEN-LAST:event_menuItemPartActionPerformed
-
-    private void menuItemWorkScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemWorkScheduleActionPerformed
-        setContentPane(new WorkSchedulePanel(emf));
-        revalidate();
-    }//GEN-LAST:event_menuItemWorkScheduleActionPerformed
-
-    private void menuItemProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemProductActionPerformed
-        setContentPane(new ProductPanel(emf));
-        revalidate();
-    }//GEN-LAST:event_menuItemProductActionPerformed
-
-    private void menuItemDistributionPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDistributionPanelActionPerformed
-        setContentPane(new DistributionOrderPanel(emf));
-        revalidate();
-    }//GEN-LAST:event_menuItemDistributionPanelActionPerformed
-
     private void buttonDistributionOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDistributionOrderActionPerformed
         setPanelVisibility(distributionOrderPanel);
     }//GEN-LAST:event_buttonDistributionOrderActionPerformed
@@ -273,6 +217,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_menuItemExitActionPerformed
+
+    private void buttonSalesForecastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalesForecastActionPerformed
+        setPanelVisibility(forecastPanel);
+    }//GEN-LAST:event_buttonSalesForecastActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -301,17 +249,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton buttonManufacturingOrder1;
     private javax.swing.JButton buttonPart;
     private javax.swing.JButton buttonProduct;
+    private javax.swing.JButton buttonSalesForecast;
     private javax.swing.JButton buttonWorkSchedule;
     private javax.swing.JPanel cardPanel;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem menuItemDistributionPanel;
     private javax.swing.JMenuItem menuItemExit;
-    private javax.swing.JMenuItem menuItemManufacturingOrder;
-    private javax.swing.JMenuItem menuItemPart;
-    private javax.swing.JMenuItem menuItemProduct;
-    private javax.swing.JMenuItem menuItemWorkSchedule;
     private javax.swing.JPanel menuPanel;
     // End of variables declaration//GEN-END:variables
 }

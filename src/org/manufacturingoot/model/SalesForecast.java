@@ -28,7 +28,7 @@ public class SalesForecast implements Serializable {
     private Date date;
 
     @Column(nullable = false)
-    private double productionProbability;
+    private Double productionProbability;
 
     @ManyToMany
     private List<Product> products = new ArrayList<>();
@@ -62,11 +62,11 @@ public class SalesForecast implements Serializable {
         }
     }
 
-    public double getProductionProbability() {
+    public Double getProductionProbability() {
         return productionProbability;
     }
 
-    public void setProductionProbability(double productionProbability) {
+    public void setProductionProbability(Double productionProbability) {
         this.productionProbability = productionProbability;
     }
 
