@@ -8,17 +8,18 @@ import javax.persistence.EntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.manufacturingoot.model.ManufacturingOrder;
+import org.manufacturingoot.model.ProductionDepartment;
 import org.manufacturingoot.model.WorkSchedule;
 import org.manufacturingoot.service.ManufacturingOrderService;
 import org.manufacturingoot.service.WorkScheduleService;
 import org.manufacturingoot.util.Constants;
+import org.manufacturingoot.util.SessionUtil;
 
 public class WorkScheduleForm extends javax.swing.JFrame {
 
     private ManufacturingOrder currentOrder;
     private WorkSchedule currentItem;
     private EntityManagerFactory emf;
-    private boolean updateData;
 
     private ManufacturingOrderService mos;
 
@@ -201,13 +202,8 @@ public class WorkScheduleForm extends javax.swing.JFrame {
             mos.create(currentItem);
         }
 
-        if (updateData) {
-            WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-            dispatchEvent(event);
-        } else {
-            currentItem = null;
-            prepareForm();
-        }
+        WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        dispatchEvent(event);
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void comboManufacturingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboManufacturingActionPerformed
@@ -233,6 +229,7 @@ public class WorkScheduleForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Date tidak dapat diolah");
         }
         currentItem.setOrder(currentOrder);
+        currentItem.setCreatedBy((ProductionDepartment) SessionUtil.getSession());
     }
 
     private void prepareForm() {
@@ -244,7 +241,6 @@ public class WorkScheduleForm extends javax.swing.JFrame {
             textFinishDate.setText(
                     new SimpleDateFormat(Constants.DATE_FORMAT).format(new Date()));
         } else {
-            updateData = true;
             String date = "";
 
             textId.setText(currentItem.getId().toString());

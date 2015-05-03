@@ -8,8 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.manufacturingoot.model.ManufacturingOrder;
 import org.manufacturingoot.model.Product;
+import org.manufacturingoot.model.ProductionDepartment;
 import org.manufacturingoot.service.ManufacturingOrderService;
 import org.manufacturingoot.service.ProductService;
+import org.manufacturingoot.util.SessionUtil;
 
 public class ProductForm extends javax.swing.JFrame {
 
@@ -241,6 +243,7 @@ public class ProductForm extends javax.swing.JFrame {
         currentItem.setProductionCost(Double.parseDouble(textCost.getText()));
         currentItem.setWeight(Double.parseDouble(textWeight.getText()));
         currentItem.setOrder(currentOrder);
+        currentItem.setCreatedBy((ProductionDepartment) SessionUtil.getSession());
     }
 
     private void prepareForm() {

@@ -9,9 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.manufacturingoot.model.DistributionOrder;
 import org.manufacturingoot.model.ManufacturingOrder;
+import org.manufacturingoot.model.SalesDepartment;
 import org.manufacturingoot.service.ManufacturingOrderService;
 import org.manufacturingoot.service.DistributionOrderService;
 import org.manufacturingoot.util.Constants;
+import org.manufacturingoot.util.SessionUtil;
 
 public class DistributionOrderForm extends javax.swing.JFrame {
 
@@ -239,6 +241,7 @@ public class DistributionOrderForm extends javax.swing.JFrame {
         currentItem.setFullName(textName.getText());
         currentItem.setPhoneNumber(textPhone.getText());
         currentItem.setOrder(currentOrder);
+        currentItem.setCreatedBy((SalesDepartment) SessionUtil.getSession());
     }
 
     private void prepareForm() {

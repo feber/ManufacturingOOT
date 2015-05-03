@@ -5,13 +5,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.manufacturingoot.model.Part;
+import org.manufacturingoot.model.WarehouseDepartment;
 import org.manufacturingoot.service.PartService;
+import org.manufacturingoot.util.SessionUtil;
 
 public class PartForm extends javax.swing.JFrame {
 
     private Part currentItem;
     private EntityManagerFactory emf;
-    private boolean updateData;
 
     public PartForm(EntityManagerFactory emf, Part mo) {
         initComponents();
@@ -170,16 +171,8 @@ public class PartForm extends javax.swing.JFrame {
             mos.create(currentItem);
         }
 
-        if (updateData) {
-            WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-            dispatchEvent(event);
-        } else {
-            textName.requestFocus();
-            textName.setText("");
-            textPrice.setText("");
-            textStock.setText("");
-            textWeight.setText("");
-        }
+        WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        dispatchEvent(event);
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void loadForm() {
@@ -187,11 +180,11 @@ public class PartForm extends javax.swing.JFrame {
         currentItem.setPrice(Double.parseDouble(textPrice.getText().trim()));
         currentItem.setStock(Integer.parseInt(textStock.getText().trim()));
         currentItem.setWeight(Double.parseDouble(textWeight.getText().trim()));
+        currentItem.setCreatedBy((WarehouseDepartment) SessionUtil.getSession());
     }
 
     private void prepareForm() {
         if (currentItem != null) {
-            updateData = true;
             textId.setText(currentItem.getId().toString());
             textName.setText(currentItem.getName());
             textPrice.setText(currentItem.getPrice().toString());

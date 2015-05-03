@@ -7,9 +7,11 @@ import java.util.Date;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.manufacturingoot.model.SalesDepartment;
 import org.manufacturingoot.model.SalesForecast;
 import org.manufacturingoot.service.SalesForecastService;
 import org.manufacturingoot.util.Constants;
+import org.manufacturingoot.util.SessionUtil;
 
 public class SalesForecastForm extends javax.swing.JFrame {
 
@@ -189,6 +191,7 @@ public class SalesForecastForm extends javax.swing.JFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Date tidak dapat diolah");
         }
+        currentItem.setCreatedBy((SalesDepartment) SessionUtil.getSession());
     }
 
     private void prepareForm() {
