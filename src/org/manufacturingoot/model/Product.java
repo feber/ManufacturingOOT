@@ -3,6 +3,7 @@ package org.manufacturingoot.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Product implements Serializable {
     @ManyToOne(optional = false)
     private ManufacturingOrder order;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     @JoinColumn
     private List<BillOfMaterial> billOfMaterials = new ArrayList<>();
 
@@ -104,8 +105,9 @@ public class Product implements Serializable {
     public void calculateCost() {
         productionCost = 0.0;
         for (BillOfMaterial bom : billOfMaterials) {
-            productionCost += bom.getPart().getPrice();
+            productionCost += bom.getPart().getPrice() * bom.getAmount();
         }
+        price *= 1.2;
     }
 
     @Override

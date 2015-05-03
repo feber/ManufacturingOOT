@@ -2,6 +2,7 @@ package org.manufacturingoot.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,8 +31,8 @@ public class Part implements Serializable {
 
     @ManyToOne
     private WarehouseDepartment createdBy;
-    
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "part")
     @JoinColumn
     private List<BillOfMaterial> billOfMaterials;
 

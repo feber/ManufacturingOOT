@@ -28,9 +28,6 @@ public class BillOfMaterial implements Serializable {
 
     private Integer amount;
 
-    @ManyToOne
-    private WarehouseDepartment createdBy;
-
     public Long getId() {
         return id;
     }
@@ -71,13 +68,5 @@ public class BillOfMaterial implements Serializable {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
-    }
-
-    public WarehouseDepartment getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(WarehouseDepartment createdBy) {
-        this.createdBy = createdBy;
     }
 }
