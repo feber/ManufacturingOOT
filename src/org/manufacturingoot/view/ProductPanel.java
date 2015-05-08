@@ -1,9 +1,13 @@
 package org.manufacturingoot.view;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.manufacturingoot.model.Product;
 import org.manufacturingoot.model.Product;
 import org.manufacturingoot.service.ProductService;
 import org.manufacturingoot.service.exceptions.NonexistentEntityException;
@@ -141,12 +145,18 @@ public class ProductPanel extends javax.swing.JPanel {
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("no row selected, form for new data");
         } finally {
-            new ProductForm(emf, selected).setVisible(true);
+            openForm(selected);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
+    private void openForm(Product selected) {
+        ProductForm temp = new ProductForm(emf, selected);
+        temp.setVisible(true);
+        temp.addWindowListener(closeWindowAdapter());
+    }
+
     private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
-        new ProductForm(emf, null).setVisible(true);
+        openForm(null);
     }//GEN-LAST:event_buttonNewActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -195,5 +205,16 @@ public class ProductPanel extends javax.swing.JPanel {
         }
 
         buttonUpdate.setEnabled(true);
+    }
+
+    private WindowListener closeWindowAdapter() {
+        return new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e); //To change body of generated methods, choose Tools | Templates.
+                loadTable();
+            }
+        };
     }
 }

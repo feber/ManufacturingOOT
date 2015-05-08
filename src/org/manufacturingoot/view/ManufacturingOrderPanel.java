@@ -1,5 +1,8 @@
 package org.manufacturingoot.view;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -143,12 +146,18 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("no row selected, form for new data");
         } finally {
-            new ManufacturingOrderForm(emf, selected).setVisible(true);
+            openForm(selected);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
+    private void openForm(ManufacturingOrder selected) {
+        ManufacturingOrderForm temp = new ManufacturingOrderForm(emf, selected);
+        temp.setVisible(true);
+        temp.addWindowListener(closeWindowAdapter());
+    }
+
     private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
-        new ManufacturingOrderForm(emf, null).setVisible(true);
+        openForm(null);
     }//GEN-LAST:event_buttonNewActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -198,5 +207,16 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
         }
 
         buttonUpdate.setEnabled(true);
+    }
+
+    private WindowListener closeWindowAdapter() {
+        return new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e); //To change body of generated methods, choose Tools | Templates.
+                loadTable();
+            }
+        };
     }
 }

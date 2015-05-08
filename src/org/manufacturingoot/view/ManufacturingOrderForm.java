@@ -17,7 +17,6 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
 
     private ManufacturingOrder currentItem;
     private EntityManagerFactory emf;
-    private boolean updateData;
 
     public ManufacturingOrderForm(EntityManagerFactory emf, ManufacturingOrder mo) {
         initComponents();
@@ -184,14 +183,9 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
             loadForm();
             mos.create(currentItem);
         }
-
-        if (updateData) {
-            WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-            dispatchEvent(event);
-        } else {
-            currentItem = null;
-            prepareForm();
-        }
+        
+        WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        dispatchEvent(event);
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void loadForm() {
@@ -216,7 +210,6 @@ public class ManufacturingOrderForm extends javax.swing.JFrame {
             textDate.setText(
                     new SimpleDateFormat(Constants.DATETIME_FORMAT).format(new Date()));
         } else {
-            updateData = true;
             textId.setText(currentItem.getId().toString());
             textEmail.setText(currentItem.getEmail());
             textMessage.setText(currentItem.getMessage());

@@ -119,6 +119,11 @@ public class LoginFrame extends javax.swing.JFrame {
 //                );
                 User user = loginService.multiLogin(
                         textUsername.getText(), someKindOfTemp);
+
+                if (user == null) {
+                    throw new NoResultException();
+                }
+
                 SessionUtil.setSession(user);
 
 //                if (role.equals("ProductionDepartment")) {
@@ -128,8 +133,7 @@ public class LoginFrame extends javax.swing.JFrame {
 //                } else if (role.equals("WarehouseDepartment")) {
 //                    new WarehouseFrame(emf).setVisible(true);
 //                }
-                
-                 if (user instanceof ProductionDepartment) {
+                if (user instanceof ProductionDepartment) {
                     new ProductionFrame(emf).setVisible(true);
                 } else if (user instanceof SalesDepartment) {
                     new SalesFrame(emf).setVisible(true);
