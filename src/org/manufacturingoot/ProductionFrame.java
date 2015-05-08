@@ -29,6 +29,7 @@ public class ProductionFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 600);
+        setLocationRelativeTo(null);
     }
 
     private void setPanelVisibility(JPanel key) {

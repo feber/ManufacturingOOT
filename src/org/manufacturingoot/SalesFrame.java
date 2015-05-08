@@ -24,6 +24,7 @@ public class SalesFrame extends javax.swing.JFrame {
         cardPanel.add(forecastPanel);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 600);
+        setLocationRelativeTo(null);
     }
 
     private void setPanelVisibility(JPanel key) {
