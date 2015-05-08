@@ -1,7 +1,6 @@
 package org.manufacturingoot;
 
 import java.awt.event.WindowEvent;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -11,7 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.manufacturingoot.model.ProductionDepartment;
+import org.manufacturingoot.model.SalesDepartment;
 import org.manufacturingoot.model.User;
+import org.manufacturingoot.model.WarehouseDepartment;
 import org.manufacturingoot.service.LoginService;
 import org.manufacturingoot.util.SessionUtil;
 
@@ -126,17 +128,27 @@ public class LoginFrame extends javax.swing.JFrame {
             try {
                 LoginService loginService = new LoginService(emf);
                 String someKindOfTemp = String.valueOf(textPassword.getPassword());
-                User user = loginService.login(role,
-                        textUsername.getText(),
-                        someKindOfTemp
-                );
+//                User user = loginService.login(role,
+//                        textUsername.getText(),
+//                        someKindOfTemp
+//                );
+                User user = loginService.multiLogin(
+                        textUsername.getText(), someKindOfTemp);
                 SessionUtil.setSession(user);
 
-                if (role.equals("ProductionDepartment")) {
+//                if (role.equals("ProductionDepartment")) {
+//                    new ProductionFrame(emf).setVisible(true);
+//                } else if (role.equals("SalesDepartment")) {
+//                    new SalesFrame(emf).setVisible(true);
+//                } else if (role.equals("WarehouseDepartment")) {
+//                    new WarehouseFrame(emf).setVisible(true);
+//                }
+                
+                 if (user instanceof ProductionDepartment) {
                     new ProductionFrame(emf).setVisible(true);
-                } else if (role.equals("SalesDepartment")) {
+                } else if (user instanceof SalesDepartment) {
                     new SalesFrame(emf).setVisible(true);
-                } else if (role.equals("WarehouseDepartment")) {
+                } else if (user instanceof WarehouseDepartment) {
                     new WarehouseFrame(emf).setVisible(true);
                 }
 
