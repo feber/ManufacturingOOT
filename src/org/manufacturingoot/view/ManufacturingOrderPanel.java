@@ -17,6 +17,7 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
     public ManufacturingOrderPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
+        loadTable();
     }
 
     /**
@@ -126,25 +127,7 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        ManufacturingOrderService mos = new ManufacturingOrderService(emf);
-        List<ManufacturingOrder> rows = mos.findManufacturingOrderEntities();
-
-        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
-        model.setNumRows(0);
-
-        for (int i = 0; i < rows.size(); i++) {
-            ManufacturingOrder current = rows.get(i);
-            Object[] data = {
-                current.getId(),
-                current.getEmail(),
-                current.getMessage(),
-                new SimpleDateFormat(Constants.DATETIME_FORMAT).format(current.getReceiveDate()),
-                current.getStatus()
-            };
-            model.addRow(data);
-        }
-
-        buttonUpdate.setEnabled(true);
+        loadTable();
     }//GEN-LAST:event_buttonReloadActionPerformed
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
@@ -181,7 +164,7 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Gagal menghapus data");
         }
-        
+
         buttonReloadActionPerformed(evt);
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
@@ -194,4 +177,26 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableData;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable() {
+        ManufacturingOrderService mos = new ManufacturingOrderService(emf);
+        List<ManufacturingOrder> rows = mos.findManufacturingOrderEntities();
+
+        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
+        model.setNumRows(0);
+
+        for (int i = 0; i < rows.size(); i++) {
+            ManufacturingOrder current = rows.get(i);
+            Object[] data = {
+                current.getId(),
+                current.getEmail(),
+                current.getMessage(),
+                new SimpleDateFormat(Constants.DATETIME_FORMAT).format(current.getReceiveDate()),
+                current.getStatus()
+            };
+            model.addRow(data);
+        }
+
+        buttonUpdate.setEnabled(true);
+    }
 }

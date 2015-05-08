@@ -17,6 +17,7 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
     public WorkSchedulePanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
+        loadTable();
     }
 
     /**
@@ -126,25 +127,7 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        WorkScheduleService mos = new WorkScheduleService(emf);
-        List<WorkSchedule> rows = mos.findWorkScheduleEntities();
-
-        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
-        model.setNumRows(0);
-
-        for (int i = 0; i < rows.size(); i++) {
-            WorkSchedule current = rows.get(i);
-            Object[] data = {
-                current.getId(),
-                current.getOrder().getEmail(),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getStartDate()),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getDueDate()),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getFinishDate())
-            };
-            model.addRow(data);
-        }
-
-        buttonUpdate.setEnabled(true);
+        loadTable();
     }//GEN-LAST:event_buttonReloadActionPerformed
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
@@ -194,4 +177,26 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableData;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable() {
+        WorkScheduleService mos = new WorkScheduleService(emf);
+        List<WorkSchedule> rows = mos.findWorkScheduleEntities();
+
+        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
+        model.setNumRows(0);
+
+        for (int i = 0; i < rows.size(); i++) {
+            WorkSchedule current = rows.get(i);
+            Object[] data = {
+                current.getId(),
+                current.getOrder().getEmail(),
+                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getStartDate()),
+                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getDueDate()),
+                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getFinishDate())
+            };
+            model.addRow(data);
+        }
+
+        buttonUpdate.setEnabled(true);
+    }
 }

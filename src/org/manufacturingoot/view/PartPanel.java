@@ -17,6 +17,7 @@ public class PartPanel extends javax.swing.JPanel {
     public PartPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
+        loadTable();
     }
 
     /**
@@ -126,24 +127,7 @@ public class PartPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        PartService mos = new PartService(emf);
-        List<Part> rows = mos.findPartEntities();
-
-        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
-        model.setNumRows(0);
-
-        for (Part current : rows) {
-            Object[] data = {
-                current.getId(),
-                current.getName(),
-                current.getPrice(),
-                current.getStock(),
-                current.getWeight()
-            };
-            model.addRow(data);
-        }
-
-        buttonUpdate.setEnabled(true);
+        loadTable();
     }//GEN-LAST:event_buttonReloadActionPerformed
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
@@ -193,4 +177,25 @@ public class PartPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableData;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable() {
+        PartService mos = new PartService(emf);
+        List<Part> rows = mos.findPartEntities();
+
+        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
+        model.setNumRows(0);
+
+        for (Part current : rows) {
+            Object[] data = {
+                current.getId(),
+                current.getName(),
+                current.getPrice(),
+                current.getStock(),
+                current.getWeight()
+            };
+            model.addRow(data);
+        }
+
+        buttonUpdate.setEnabled(true);
+    }
 }

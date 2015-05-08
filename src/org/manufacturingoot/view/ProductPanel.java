@@ -15,6 +15,7 @@ public class ProductPanel extends javax.swing.JPanel {
     public ProductPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
+        loadTable();
     }
 
     /**
@@ -124,25 +125,7 @@ public class ProductPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        ProductService mos = new ProductService(emf);
-        List<Product> rows = mos.findProductEntities();
-
-        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
-        model.setNumRows(0);
-
-        for (Product current : rows) {
-            Object[] data = {
-                current.getId(),
-                current.getName(),
-                current.getPrice(),
-                current.getProductionCost(),
-                current.getWeight(),
-                current.getOrder().getEmail(),
-            };
-            model.addRow(data);
-        }
-
-        buttonUpdate.setEnabled(true);
+        loadTable();
     }//GEN-LAST:event_buttonReloadActionPerformed
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
@@ -192,4 +175,25 @@ public class ProductPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableData;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable() {
+        ProductService mos = new ProductService(emf);
+        List<Product> rows = mos.findProductEntities();
+
+        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
+        model.setNumRows(0);
+
+        for (Product current : rows) {
+            Object[] data = {
+                current.getId(),
+                current.getName(),
+                current.getPrice(),
+                current.getProductionCost(),
+                current.getWeight(),
+                current.getOrder().getEmail(),};
+            model.addRow(data);
+        }
+
+        buttonUpdate.setEnabled(true);
+    }
 }

@@ -17,6 +17,7 @@ public class SalesForecastPanel extends javax.swing.JPanel {
     public SalesForecastPanel(EntityManagerFactory emf) {
         initComponents();
         this.emf = emf;
+        loadTable();
     }
 
     /**
@@ -126,23 +127,7 @@ public class SalesForecastPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReloadActionPerformed
-        SalesForecastService mos = new SalesForecastService(emf);
-        List<SalesForecast> rows = mos.findSalesForecastEntities();
-
-        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
-        model.setNumRows(0);
-
-        for (int i = 0; i < rows.size(); i++) {
-            SalesForecast current = rows.get(i);
-            Object[] data = {
-                current.getId(),
-                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getDate()),
-                current.getProductionProbability()
-            };
-            model.addRow(data);
-        }
-
-        buttonUpdate.setEnabled(true);
+        loadTable();
     }//GEN-LAST:event_buttonReloadActionPerformed
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
@@ -192,4 +177,24 @@ public class SalesForecastPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableData;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable() {
+        SalesForecastService mos = new SalesForecastService(emf);
+        List<SalesForecast> rows = mos.findSalesForecastEntities();
+
+        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
+        model.setNumRows(0);
+
+        for (int i = 0; i < rows.size(); i++) {
+            SalesForecast current = rows.get(i);
+            Object[] data = {
+                current.getId(),
+                new SimpleDateFormat(Constants.DATE_FORMAT).format(current.getDate()),
+                current.getProductionProbability()
+            };
+            model.addRow(data);
+        }
+
+        buttonUpdate.setEnabled(true);
+    }
 }
