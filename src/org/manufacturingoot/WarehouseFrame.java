@@ -47,8 +47,6 @@ public class WarehouseFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         menuItemLogOut = new javax.swing.JMenuItem();
         menuItemExit = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        menutItemAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Warehouse Department");
@@ -100,13 +98,6 @@ public class WarehouseFrame extends javax.swing.JFrame {
 
         menuBar.add(jMenu1);
 
-        jMenu2.setText("Help");
-
-        menutItemAbout.setText("About");
-        jMenu2.add(menutItemAbout);
-
-        menuBar.add(jMenu2);
-
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,11 +142,9 @@ public class WarehouseFrame extends javax.swing.JFrame {
     private javax.swing.JButton buttonPart;
     private javax.swing.JPanel cardPanel;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemLogOut;
     private javax.swing.JPanel menuPanel;
-    private javax.swing.JMenuItem menutItemAbout;
     // End of variables declaration//GEN-END:variables
 }

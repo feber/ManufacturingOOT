@@ -6,6 +6,7 @@ import java.awt.event.WindowListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.RollbackException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.manufacturingoot.model.ManufacturingOrder;
@@ -170,8 +171,9 @@ public class ManufacturingOrderPanel extends javax.swing.JPanel {
         } catch (IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "Pilih baris terlebih dahulu");
         } catch (NonexistentEntityException ex) {
-            ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Gagal menghapus data");
+        } catch (RollbackException re) {
+            JOptionPane.showMessageDialog(null, "Data terpilih digunakan di tabel lain.");
         }
 
         buttonReloadActionPerformed(evt);

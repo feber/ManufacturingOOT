@@ -201,7 +201,7 @@ public class PartPanel extends javax.swing.JPanel {
                 current.getName(),
                 current.getPrice(),
                 current.getStock(),
-                current.getWeight()
+                current.getWeight() + " Kg"
             };
             model.addRow(data);
         }

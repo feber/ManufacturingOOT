@@ -49,7 +49,7 @@ public class WorkSchedulePanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Email", "Message", "Receive Date", "Status"
+                "ID", "Email", "Start", "Due", "Finish"
             }
         ) {
             boolean[] canEdit = new boolean [] {

@@ -14,17 +14,17 @@ import org.manufacturingoot.util.Constants;
 import org.manufacturingoot.util.SessionUtil;
 
 public class SalesForecastForm extends javax.swing.JFrame {
-    
+
     private SalesForecast currentItem;
     private EntityManagerFactory emf;
-    
+
     public SalesForecastForm(EntityManagerFactory emf, SalesForecast mo) {
         initComponents();
         this.emf = emf;
         currentItem = mo;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         prepareForm();
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -158,7 +158,7 @@ public class SalesForecastForm extends javax.swing.JFrame {
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
         SalesForecastService mos = new SalesForecastService(emf);
-        
+
         if (currentItem != null) {
             loadForm();
             try {
@@ -172,15 +172,20 @@ public class SalesForecastForm extends javax.swing.JFrame {
             loadForm();
             mos.create(currentItem);
         }
-        
+
         WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         dispatchEvent(event);
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void buttonProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProductsActionPerformed
+        if (currentItem == null) {
+            currentItem = new SalesForecast();
+            loadForm();
+            new SalesForecastService(emf).create(currentItem);
+        }
         new ChooseProductPanel(emf, currentItem).setVisible(true);
     }//GEN-LAST:event_buttonProductsActionPerformed
-    
+
     private void loadForm() {
         currentItem.setProductionProbability(
                 Double.parseDouble(textProbability.getText()));
@@ -194,7 +199,7 @@ public class SalesForecastForm extends javax.swing.JFrame {
         }
         currentItem.setCreatedBy((SalesDepartment) SessionUtil.getSession());
     }
-    
+
     private void prepareForm() {
         if (currentItem == null) {
             textDate.setText(
@@ -202,7 +207,7 @@ public class SalesForecastForm extends javax.swing.JFrame {
         } else {
             textId.setText(currentItem.getId().toString());
             textProbability.setText(currentItem.getProductionProbability().toString());
-            String date = new SimpleDateFormat(Constants.DATETIME_FORMAT).format(currentItem.getDate());
+            String date = new SimpleDateFormat(Constants.DATE_FORMAT).format(currentItem.getDate());
             textDate.setText(date);
         }
     }

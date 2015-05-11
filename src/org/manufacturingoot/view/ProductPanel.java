@@ -199,8 +199,8 @@ public class ProductPanel extends javax.swing.JPanel {
                 current.getName(),
                 current.getPrice(),
                 current.getProductionCost(),
-                current.getWeight(),
-                current.getOrder().getEmail(),};
+                current.getWeight() + " Kg",
+                current.getOrder().getEmail()};
             model.addRow(data);
         }
 

@@ -1,5 +1,6 @@
 package org.manufacturingoot.view;
 
+import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -9,11 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import org.manufacturingoot.model.BillOfMaterial;
 import org.manufacturingoot.model.Part;
 import org.manufacturingoot.model.Product;
-import org.manufacturingoot.model.ProductionDepartment;
 import org.manufacturingoot.service.BillOfMaterialService;
 import org.manufacturingoot.service.PartService;
 import org.manufacturingoot.service.ProductService;
-import org.manufacturingoot.util.SessionUtil;
 
 public class ChoosePartPanel extends javax.swing.JFrame {
 
@@ -40,6 +39,10 @@ public class ChoosePartPanel extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tableData.getModel();
 
         for (Part current : rows) {
+            if (current.getStock() < 1) {
+                continue;
+            }
+
             int amount = 0;
             try {
                 BillOfMaterial temp = boms.findBillOfMaterialByFK(current, product);
@@ -159,7 +162,7 @@ public class ChoosePartPanel extends javax.swing.JFrame {
                     bom.setProduct(product);
                     boms.edit(bom);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    // ex.printStackTrace();
                 } finally {
                     product.calculateCost();
                     try {
@@ -167,6 +170,9 @@ public class ChoosePartPanel extends javax.swing.JFrame {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
+
+                    WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+                    dispatchEvent(event);
                 }
             }
         }

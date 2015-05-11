@@ -1,8 +1,8 @@
 package org.manufacturingoot.view;
 
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.WindowListener;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -204,11 +204,17 @@ public class ProductForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
-        ProductService mos = new ProductService(emf);
+        if (textPrice.getText().equals("0")) {
+            JOptionPane.showMessageDialog(null, "Harga tidak boleh 0");
+            return;
+        }
+
+        ProductService ps = new ProductService(emf);
 
         if (currentItem != null) {
+            loadForm();
             try {
-                mos.edit(currentItem);
+                ps.edit(currentItem);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Gagal melakukan update");
@@ -216,7 +222,7 @@ public class ProductForm extends javax.swing.JFrame {
         } else {
             currentItem = new Product();
             loadForm();
-            mos.create(currentItem);
+            ps.create(currentItem);
         }
 
         WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -229,6 +235,12 @@ public class ProductForm extends javax.swing.JFrame {
         System.out.println(currentOrder);
     }//GEN-LAST:event_comboManufacturingActionPerformed
 
+    private void openForm() {
+        ChoosePartPanel partPanel = new ChoosePartPanel(emf, currentItem);
+        partPanel.setVisible(true);
+        partPanel.addWindowListener(closeWindowAdapter());
+    }
+
     private void buttonPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPartActionPerformed
         PartService partService = new PartService(emf);
         if (partService.getPartCount() > 0) {
@@ -237,7 +249,7 @@ public class ProductForm extends javax.swing.JFrame {
                 loadForm();
                 ps.create(currentItem);
             }
-            new ChoosePartPanel(emf, currentItem).setVisible(true);
+            openForm();
         } else {
             JOptionPane.showMessageDialog(null, "Tidak ada part yang terdaftar");
         }
@@ -245,7 +257,7 @@ public class ProductForm extends javax.swing.JFrame {
 
     private void loadForm() {
         currentItem.setName(textName.getText());
-        // currentItem.setPrice(Double.parseDouble(textPrice.getText()));
+        currentItem.setPrice(Double.parseDouble(textPrice.getText()));
         currentItem.setProductionCost(Double.parseDouble(textCost.getText()));
         currentItem.setWeight(Double.parseDouble(textWeight.getText()));
         currentItem.setOrder(currentOrder);
@@ -283,4 +295,16 @@ public class ProductForm extends javax.swing.JFrame {
     private javax.swing.JTextField textPrice;
     private javax.swing.JTextField textWeight;
     // End of variables declaration//GEN-END:variables
+
+    private WindowListener closeWindowAdapter() {
+        return new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e); //To change body of generated methods, choose Tools | Templates.
+                textCost.setText(currentItem.getProductionCost().toString());
+                textPrice.setText(textCost.getText());
+            }
+        };
+    }
 }

@@ -1,5 +1,6 @@
 package org.manufacturingoot.view;
 
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -114,12 +115,16 @@ public class ChooseProductPanel extends javax.swing.JFrame {
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
         System.out.println(Arrays.toString(tableData.getSelectedRows()));
         ProductService ps = new ProductService(emf);
+        salesForecast.getProducts().clear();
         for (int i = 0; i < tableData.getSelectedRows().length; i++) {
             String temp = String.valueOf(tableData.getSelectedRows()[i]);
             long id = Long.parseLong(tableData.getValueAt(Integer.parseInt(temp), 0)
                     .toString());
             salesForecast.getProducts().add(ps.findProduct(id));
         }
+
+        WindowEvent event = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        dispatchEvent(event);
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
